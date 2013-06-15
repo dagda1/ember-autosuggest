@@ -14,11 +14,8 @@ module("EmberAutosuggest.AutoSuggestView", {
   }
 });
 
-test("autosuggest input is rendered", function(){
-  ok(view.$('input.autosuggest'));
-});
-
 test("autosuggest DOM elements are setup", function(){
   ok(view.$('div.autosuggest'));
-  ok(view.$('ul.selections'));
+  ok(view.$('input.autosuggest').length);
+  ok(view.$('ul.selections').length);
 });
