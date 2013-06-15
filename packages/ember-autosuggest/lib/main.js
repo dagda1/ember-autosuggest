@@ -5,4 +5,4 @@ Ember Autosuggest
 */
 
 require("ember-autosuggest/core");
-
+require("ember-autosuggest/autosuggest");
