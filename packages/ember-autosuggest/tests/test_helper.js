@@ -2,7 +2,7 @@ window.fillIn = function(view, selector, text){
   var el = find(view, selector);
 
   //keyup with any char to trigger bindings sync
-  var event = jQuery.event('keyup');
+  var event = jQuery.Event('keyup');
 
   event.keyCode = 46;
 

@@ -1,10 +1,11 @@
 require('ember-autosuggest/~tests/test_helper');
 
-var view;
+var view, controller;
 
 module("EmberAutosuggest.AutoSuggestView", {
   setup: function(){
     view = window.EmberAutosuggest.AutoSuggestView.create({});
+    controller = Ember.Controller.extend(EmberAutosuggest.AutosuggestControllerMixin).create();
     Ember.run(function(){
       view.appendTo('#qunit-fixture');
     });
@@ -17,11 +18,15 @@ module("EmberAutosuggest.AutoSuggestView", {
 });
 
 test("autosuggest DOM elements are setup", function(){
-  ok(view.$('div.autosuggest'));
+  ok(view.$().hasClass('autosuggest'));
   ok(view.$('input.autosuggest').length);
   ok(view.$('ul.selections').length);
   ok(view.$('div.results').length);
   ok(view.$('ul.suggestions').length);
+});
+
+test("controller must have autosuggestcontroller mixin.", function(){
+  ok(controller instanceof EmberAutosuggest.AutosuggestControllerMixin);
 });
 
 test("a no results message is displayed when there is no source", function(){
