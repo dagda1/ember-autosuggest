@@ -1,1 +1,1 @@
-window.EmberAutosuggest = Ember.Namespace.create();
+window.EmberAutosuggest = EmberAutosuggest = Ember.Namespace.create();

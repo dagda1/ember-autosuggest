@@ -1,3 +1,5 @@
+require('ember-autosuggest/~tests/test_helper');
+
 var view;
 
 module("EmberAutosuggest.AutoSuggestView", {
@@ -18,4 +20,11 @@ test("autosuggest DOM elements are setup", function(){
   ok(view.$('div.autosuggest'));
   ok(view.$('input.autosuggest').length);
   ok(view.$('ul.selections').length);
+  ok(view.$('div.results').length);
+  ok(view.$('ul.suggestions').length);
+});
+
+test("a no results message is displayed when there is no source", function(){
+  fillIn(view, 'input.autosuggest', 'Paul');
+  equal($('input.autosuggest').val(), 'Paul');
 });
