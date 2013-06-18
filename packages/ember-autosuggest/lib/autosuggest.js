@@ -6,7 +6,7 @@ window.EmberAutosuggest.AutoSuggestView = Ember.View.extend({
                                         "<li>{{view view.autosuggest}}<\/li>" + 
                                       "<\/ul>"+ 
                                       "<div class='results'>" + 
-                                         "<ul class='suggestions'><li class='no-results'>No Results.<\/ul>" + 
+                                         "<ul class='suggestions'><\/ul>" + 
                                       "<\/div>"),
 
   autosuggest: Ember.TextField.extend({
