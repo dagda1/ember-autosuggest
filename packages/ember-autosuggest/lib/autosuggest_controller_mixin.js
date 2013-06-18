@@ -1,3 +1,3 @@
-EmberAutosuggest.AutosuggestControllerMixin = Ember.Mixin.create({
+window.EmberAutosuggest.AutosuggestControllerMixin = Ember.Mixin.create({
 
 });
