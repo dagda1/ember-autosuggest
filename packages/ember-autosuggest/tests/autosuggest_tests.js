@@ -31,5 +31,4 @@ test("a no results message is displayed when there is no source", function(){
   waitForSelector(view, '.results .suggestions .no-results', function(el){
     equal(el.html(), "No Results.", "No results message is displayed.");
   }, "No results message element cannot be found");
-
 });
