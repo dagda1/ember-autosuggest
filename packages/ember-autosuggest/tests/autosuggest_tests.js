@@ -27,5 +27,9 @@ test("autosuggest DOM elements are setup", function(){
 
 test("a no results message is displayed when there is no source", function(){
   fillIn(view, 'input.autosuggest', 'Paul');
-  equal($('input.autosuggest').val(), 'Paul');
+  var el = find(view, '.results .suggestions .no-results');
+  waitForSelector(view, '.results .suggestions .no-results', function(el){
+    equal(el.html(), "No Results.", "No results message is displayed.");
+  }, "No results message element cannot be found");
+
 });
