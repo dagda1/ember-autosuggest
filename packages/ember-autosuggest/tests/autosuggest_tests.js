@@ -4,7 +4,7 @@ var view, controller;
 
 module("EmberAutosuggest.AutoSuggestView", {
   setup: function(){
-    view = EmberAutosuggest.AutoSuggestView.create({});
+    view = EmberAutosuggest.AutoSuggestView.create();
     controller = Ember.Controller.extend(EmberAutosuggest.AutosuggestControllerMixin).create();
     Ember.run(function(){
       view.appendTo('#qunit-fixture');
