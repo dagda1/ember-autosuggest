@@ -56,13 +56,8 @@ window.waitForSelector = function(view, selector, callback, message) {
 window.fillIn = function(view, selector, text){
   var el = find(view, selector);
 
-  //keyup with any char to trigger bindings sync
-  var event = jQuery.Event('keyup');
-
-  event.keyCode = 46;
-
-  Ember.run(function(){
-    el.val(text).trigger(event);
+  Ember.run(function() {
+    el.val(text).change();
   });
 
   return el;

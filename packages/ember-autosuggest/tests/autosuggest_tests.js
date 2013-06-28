@@ -8,7 +8,7 @@ var view, controller, source;
 module("EmberAutosuggest.AutoSuggestView", {
   setup: function(){
     view = EmberAutosuggest.AutoSuggestView.create();
-    controller = Ember.Controller.extend(EmberAutosuggest.AutosuggestControllerMixin).create();
+    controller = Ember.ArrayController.extend(EmberAutosuggest.AutosuggestControllerMixin).create();
     set(view, 'controller', controller);
     Ember.run(function(){
       view.appendTo('#qunit-fixture');
@@ -29,10 +29,6 @@ test("autosuggest DOM elements are setup", function(){
   ok(view.$('ul.suggestions').length);
 });
 
-test("undefined or zero length source can be recognised", function(){
-  equal(get(view, 'source.length'), 0, 'zero length source');
-});
-
 test("a no results message is displayed when there is no source", function(){
   fillIn(view, 'input.autosuggest', 'Paul');
   var el = find(view, '.results .suggestions .no-results');
@@ -43,15 +39,13 @@ test("a no results message is displayed when there is no source", function(){
 
 module("Search results", {
   setup: function(){
-    source = Ember.ArrayProxy.create({
-      content: Ember.A([
+    controller = Ember.ArrayController.extend(EmberAutosuggest.AutosuggestControllerMixin).create();
+    controller.set('content', Ember.A([
         Ember.Object.create({id: 1, name: "Bob Hoskins"}),
         Ember.Object.create({id: 2, name: "Michael Collins"}),
         Ember.Object.create({id: 3, name: "Paul Cowan"}),
-      ])
-    });
+    ]));
     view = EmberAutosuggest.AutoSuggestView.create();
-    controller = Ember.Controller.extend(EmberAutosuggest.AutosuggestControllerMixin).create();
     set(view, 'controller', controller);
     Ember.run(function(){
       view.appendTo('#qunit-fixture');
@@ -65,5 +59,11 @@ module("Search results", {
 });
 
 test("A source for searching can be recognised", function(){
-  equal(source.get('length'), 3, "precon - 3 results exist");
+  equal(get(controller, 'length'), 3, "precon - 3 results exist");
+
+  fillIn(view, 'input.autosuggest', 'Paul');
+  waitForSelector(view, '.results .suggestions li.result', function(el){
+    equal(el.length, 1, "1 search result exists");
+    equal(el.first().html(), "Paul Cowan", "Results filtered to 1 result.");
+  }, "1 result element cannot be found");
 });

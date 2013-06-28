@@ -7,14 +7,7 @@ var precompileTemplate = Ember.Handlebars.compile,
 EmberAutosuggest.AutoSuggestView = Ember.View.extend({
   classNameBindings: [':autosuggest'],
   minChars: 1,
-  source: Ember.computed(function(){
-    source = get('controller.source');
-    if((!source) || (!get(source, 'length'))){
-      return [];
-    }
-
-    return source;
-  }).property('controller.source.[]'),
+  searchPath: 'name',
 
   defaultTemplate: precompileTemplate("<ul class='selections'>" +
                                         "<li>{{view view.autosuggest}}<\/li>" +
@@ -22,7 +15,7 @@ EmberAutosuggest.AutoSuggestView = Ember.View.extend({
                                       "<div class='results'>" +
                                          "<ul class='suggestions'>" +
                                          "{{#each searchResults}}" +
-                                         "  <li>Some result<\/li>" +
+                                         "  <li class=\"result\">Some result<\/li>" +
                                          "{{else}}" +
                                          " <li class='no-results'>No Results.<\/li>" +
                                          "{{/each}}" +
@@ -31,6 +24,9 @@ EmberAutosuggest.AutoSuggestView = Ember.View.extend({
 
   autosuggest: Ember.TextField.extend({
     classNameBindings: [':autosuggest'],
+    searchPathBinding: 'parentView.searchPath',
+    sourceBinding: 'parentView.source',
+
     didInsertElement: function(){
       addObserver(this, 'value', this.valueDidChange);
     },
@@ -39,11 +35,32 @@ EmberAutosuggest.AutoSuggestView = Ember.View.extend({
       removeObserver(this, 'value', this.valueDidChange);
     },
     valueDidChange: function(){
-      var value = get(this, 'value');
+      console.log('flaps');
+      var source = get(this, 'source'),
+          value = get(this, 'value'),
+          self = this,
+          searchResults = get(this, 'controller.searchResults');
+
+      searchResults.clear();
+
+      if(!source){
+        return;
+      }
+
       if(value.length <= get(this, 'parentView.minChars')){
         return;
       }
-      console.log(value);
+
+      //TODO: filter out selected results
+      var results = source.filter(function(item){
+        return item.get(get(self, 'searchPath')).toLowerCase().search(value.toLowerCase()) !== -1;
+      });
+
+      if(get(results, 'length') === 0){
+        return;
+      }
+
+      searchResults.pushObjects(results.toArray());
     }
   }),
 });
