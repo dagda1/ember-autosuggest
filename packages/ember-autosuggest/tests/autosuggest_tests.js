@@ -3,18 +3,60 @@ require('ember-autosuggest/~tests/test_helper');
 var get = Ember.get,
     set = Ember.set;
 
+var App, find, click, fillIn, currentRoute, visit;
+
 var view, controller, source;
 
 module("EmberAutosuggest.AutoSuggestView", {
   setup: function(){
-    view = EmberAutosuggest.AutoSuggestView.create();
-    controller = Ember.ArrayController.extend(EmberAutosuggest.AutosuggestControllerMixin).create();
-    set(view, 'controller', controller);
+    Ember.$('<style>#ember-testing-container { position: absolute; background: white; bottom: 0; right: 0; width: 640px; height: 384px; overflow: auto; z-index: 9999; border: 1px solid #ccc; } #ember-testing { zoom: 50%; }</style>').appendTo('head');
+    Ember.$('<div id="ember-testing-container"><div id="ember-testing"></div></div>').appendTo('body');
+    Ember.run(function() {
+      App = Ember.Application.create({
+        rootElement: '#ember-testing'
+      });
+
+      App.Router.map(function() {
+        this.route('index', {path: '/'});
+      });
+
+      App.setupForTesting();
+    });
+
     Ember.run(function(){
-      view.appendTo('#qunit-fixture');
+      App.advanceReadiness();
+    });
+
+    App.injectTestHelpers();
+
+    find = window.find;
+    click = window.click;
+    fillIn = window.fillIn;
+    visit = window.visit;
+
+    controller = Ember.ArrayController.extend(EmberAutosuggest.AutosuggestControllerMixin).create();
+
+    controller.set('content',  Ember.A([
+      Ember.Object.create({id: 1, name: "Bob Hoskins"}),
+      Ember.Object.create({id: 2, name: "Michael Collins"}),
+      Ember.Object.create({id: 3, name: "Paul Cowan"}),
+    ]));
+
+    view = EmberAutosuggest.AutoSuggestView.createWithMixins({
+      source: Ember.computed.alias('controller.content')
+    });
+
+    set(view, 'controller', controller);
+
+    Ember.run(function(){
+      view.appendTo('#ember-testing');
     });
   },
   teardown: function(){
+    App.removeTestHelpers();
+    Ember.$('#ember-testing-container, #ember-testing').remove();
+    Ember.run(App, App.destroy);
+    App = null;
     Ember.run(function(){
       view.destroy();
     });
@@ -22,48 +64,29 @@ module("EmberAutosuggest.AutoSuggestView", {
 });
 
 test("autosuggest DOM elements are setup", function(){
-  ok(view.$().hasClass('autosuggest'));
-  ok(view.$('input.autosuggest').length);
-  ok(view.$('ul.selections').length);
-  ok(view.$('div.results').length);
-  ok(view.$('ul.suggestions').length);
+  visit('/').then(function() {
+    ok(view.$().hasClass('autosuggest'));
+    ok(view.$('input.autosuggest').length);
+    ok(view.$('ul.selections').length);
+    ok(view.$('div.results').length);
+    ok(view.$('ul.suggestions').length);
+  });
 });
 
 test("a no results message is displayed when there is no source", function(){
-  fillIn(view, 'input.autosuggest', 'Paul');
-  var el = find(view, '.results .suggestions .no-results');
-  waitForSelector(view, '.results .suggestions .no-results', function(el){
-    equal(el.html(), "No Results.", "No results message is displayed.");
-  }, "No results message element cannot be found");
-});
-
-module("Search results", {
-  setup: function(){
-    controller = Ember.ArrayController.extend(EmberAutosuggest.AutosuggestControllerMixin).create();
-    controller.set('content', Ember.A([
-        Ember.Object.create({id: 1, name: "Bob Hoskins"}),
-        Ember.Object.create({id: 2, name: "Michael Collins"}),
-        Ember.Object.create({id: 3, name: "Paul Cowan"}),
-    ]));
-    view = EmberAutosuggest.AutoSuggestView.create();
-    set(view, 'controller', controller);
-    Ember.run(function(){
-      view.appendTo('#qunit-fixture');
-    });
-  },
-  teardown: function(){
-    Ember.run(function(){
-      view.destroy();
-    });
-  }
+  visit('/')
+  .fillIn('input.autosuggest', 'xxxx').then(function(){
+    equal(find('.results .suggestions .no-results').html(), "No Results.", "No results message is displayed.");
+  });
 });
 
 test("A source for searching can be recognised", function(){
   equal(get(controller, 'length'), 3, "precon - 3 results exist");
 
-  fillIn(view, 'input.autosuggest', 'Paul');
-  waitForSelector(view, '.results .suggestions li.result', function(el){
+  visit('/')
+  .fillIn('input.autosuggest', 'Paul').then(function(){
+    var el = find('.results .suggestions li.result');
     equal(el.length, 1, "1 search result exists");
-    equal(el.first().html(), "Paul Cowan", "Results filtered to 1 result.");
-  }, "1 result element cannot be found");
+    equal(el.first().text(), "Paul Cowan", "Results filtered to 1 result.");
+  });
 });

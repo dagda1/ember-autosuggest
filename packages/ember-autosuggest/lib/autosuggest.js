@@ -15,7 +15,7 @@ EmberAutosuggest.AutoSuggestView = Ember.View.extend({
                                       "<div class='results'>" +
                                          "<ul class='suggestions'>" +
                                          "{{#each searchResults}}" +
-                                         "  <li class=\"result\">Some result<\/li>" +
+                                         "  <li class=\"result\">{{display}}<\/li>" +
                                          "{{else}}" +
                                          " <li class='no-results'>No Results.<\/li>" +
                                          "{{/each}}" +
@@ -35,7 +35,6 @@ EmberAutosuggest.AutoSuggestView = Ember.View.extend({
       removeObserver(this, 'value', this.valueDidChange);
     },
     valueDidChange: function(){
-      console.log('flaps');
       var source = get(this, 'source'),
           value = get(this, 'value'),
           self = this,
@@ -60,7 +59,9 @@ EmberAutosuggest.AutoSuggestView = Ember.View.extend({
         return;
       }
 
-      searchResults.pushObjects(results.toArray());
+      searchResults.pushObjects(results.map(function(item){
+        return Ember.Object.create({display: get(item, get(self, 'searchPath')), data: item});
+      }));
     }
   }),
 });
