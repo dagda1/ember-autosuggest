@@ -82,7 +82,7 @@ test("a no results message is displayed when there is no source", function(){
   });
 });
 
-test("A source for searching can be recognised", function(){
+test("Search results should be filtered", function(){
   equal(get(controller, 'length'), 3, "precon - 3 results exist");
 
   visit('/').then(function(){
