@@ -10,6 +10,7 @@ var view, controller, source;
 module("EmberAutosuggest.AutoSuggestView", {
   setup: function(){
     Ember.$('<style>#ember-testing-container { position: absolute; background: white; bottom: 0; right: 0; width: 640px; height: 384px; overflow: auto; z-index: 9999; border: 1px solid #ccc; } #ember-testing { zoom: 50%; }</style>').appendTo('head');
+    Ember.$('<style>.hdn{ display: none; }</style>').appendTo('head');
     Ember.$('<div id="ember-testing-container"><div id="ember-testing"></div></div>').appendTo('body');
     Ember.run(function() {
       App = Ember.Application.create({
@@ -68,13 +69,13 @@ test("autosuggest DOM elements are setup", function(){
     ok(view.$().hasClass('autosuggest'));
     ok(view.$('input.autosuggest').length);
     ok(view.$('ul.selections').length);
-    equal(0, view.$('ul.suggestions').length, "results ul is initially not displayed");
+    equal(false, view.$('ul.suggestions').is(':visible'), "results ul is initially not displayed");
   });
 });
 
 test("a no results message is displayed when there is no source", function(){
   visit('/').then(function(){
-    equal(0, view.$('ul.suggestions').length, "precon - results ul is initially not displayed");
+    equal(false, view.$('ul.suggestions').is(':visible'), "precon - results ul is initially not displayed");
   })
   .fillIn('input.autosuggest', 'xxxx').then(function(){
     ok(view.$('ul.suggestions').is(':visible'), "results ul is displayed.");
@@ -86,7 +87,7 @@ test("Search results should be filtered", function(){
   equal(get(controller, 'length'), 3, "precon - 3 results exist");
 
   visit('/').then(function(){
-    equal(0, view.$('ul.suggestions').length, "precon - results ul is initially not displayed");
+    equal(false, view.$('ul.suggestions').is(':visible'), "precon - results ul is initially not displayed");
   })
   .fillIn('input.autosuggest', 'Paul').then(function(){
     var el = find('.results .suggestions li.result');

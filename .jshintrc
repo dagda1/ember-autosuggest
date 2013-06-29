@@ -39,7 +39,7 @@
 "browser": true,
 "boss": true,
 "curly": false,
-"debug": false,
+"debug": true,
 "devel": false,
 "eqeqeq": true,
 "evil": true,
