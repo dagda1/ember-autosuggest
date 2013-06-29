@@ -1,1 +1,5 @@
 .hdn {display: none;}
+
+ul.selections, ul.suggestions{ list-style: none;}
+
+ul.suggestions{ border: 1px solid red; }
