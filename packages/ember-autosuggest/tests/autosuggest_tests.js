@@ -3,7 +3,7 @@ require('ember-autosuggest/~tests/test_helper');
 var get = Ember.get,
     set = Ember.set;
 
-var App, find, click, fillIn, currentRoute, visit;
+var App, find, click, fillIn, visit;
 
 var view, controller, source;
 

@@ -15,7 +15,7 @@ EmberAutosuggest.AutoSuggestView = Ember.View.extend({
                                       "<\/ul>"+
                                       "{{#if view.query}}" +
                                         "<div class='results'>" +
-                                           "<ul class='suggestions'>" +
+                                           "<ul class='suggestions' style='border: 1px solid red'>" +
                                            "{{#each searchResults}}" +
                                            "  <li class=\"result\">{{display}}<\/li>" +
                                            "{{else}}" +
