@@ -8,24 +8,28 @@ EmberAutosuggest.AutoSuggestView = Ember.View.extend({
   classNameBindings: [':autosuggest'],
   minChars: 1,
   searchPath: 'name',
+  query: '',
 
   defaultTemplate: precompileTemplate("<ul class='selections'>" +
                                         "<li>{{view view.autosuggest}}<\/li>" +
                                       "<\/ul>"+
-                                      "<div class='results'>" +
-                                         "<ul class='suggestions'>" +
-                                         "{{#each searchResults}}" +
-                                         "  <li class=\"result\">{{display}}<\/li>" +
-                                         "{{else}}" +
-                                         " <li class='no-results'>No Results.<\/li>" +
-                                         "{{/each}}" +
-                                         "<\/ul>" +
-                                      "<\/div>"),
+                                      "{{#if view.query}}" +
+                                        "<div class='results'>" +
+                                           "<ul class='suggestions'>" +
+                                           "{{#each searchResults}}" +
+                                           "  <li class=\"result\">{{display}}<\/li>" +
+                                           "{{else}}" +
+                                           " <li class='no-results'>No Results.<\/li>" +
+                                           "{{/each}}" +
+                                           "<\/ul>" +
+                                        "<\/div>" +
+                                      "{{/if}}"),
 
   autosuggest: Ember.TextField.extend({
     classNameBindings: [':autosuggest'],
     searchPathBinding: 'parentView.searchPath',
     sourceBinding: 'parentView.source',
+    valueBinding: 'parentView.query',
 
     didInsertElement: function(){
       addObserver(this, 'value', this.valueDidChange);

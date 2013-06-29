@@ -68,14 +68,16 @@ test("autosuggest DOM elements are setup", function(){
     ok(view.$().hasClass('autosuggest'));
     ok(view.$('input.autosuggest').length);
     ok(view.$('ul.selections').length);
-    ok(view.$('div.results').length);
-    ok(view.$('ul.suggestions').length);
+    equal(0, view.$('ul.suggestions').length, "results ul is initially not displayed");
   });
 });
 
 test("a no results message is displayed when there is no source", function(){
-  visit('/')
+  visit('/').then(function(){
+    equal(0, view.$('ul.suggestions').length, "precon - results ul is initially not displayed");
+  })
   .fillIn('input.autosuggest', 'xxxx').then(function(){
+    ok(view.$('ul.suggestions').is(':visible'), "results ul is displayed.");
     equal(find('.results .suggestions .no-results').html(), "No Results.", "No results message is displayed.");
   });
 });
@@ -83,7 +85,9 @@ test("a no results message is displayed when there is no source", function(){
 test("A source for searching can be recognised", function(){
   equal(get(controller, 'length'), 3, "precon - 3 results exist");
 
-  visit('/')
+  visit('/').then(function(){
+    equal(0, view.$('ul.suggestions').length, "precon - results ul is initially not displayed");
+  })
   .fillIn('input.autosuggest', 'Paul').then(function(){
     var el = find('.results .suggestions li.result');
     equal(el.length, 1, "1 search result exists");
