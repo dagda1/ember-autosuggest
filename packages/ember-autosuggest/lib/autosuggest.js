@@ -19,26 +19,28 @@ EmberAutosuggest.AutoSuggestView = Ember.View.extend({
     return false;
   }).property('query'),
 
-  defaultTemplate: precompileTemplate("<ul class='selections'>" +
-                                        "<li>{{view view.autosuggest}}<\/li>" +
-                                      "<\/ul>"+
-                                        "<div {{bindAttr class=':results view.hasQuery::hdn'}}>" +
-                                           "<ul class='suggestions' style='border: 1px solid red'>" +
-                                           "{{#each searchResults}}" +
-                                           "  <li class=\"result\">{{display}}<\/li>" +
-                                           "{{else}}" +
-                                           " <li class='no-results'>No Results.<\/li>" +
-                                           "{{/each}}" +
-                                           "<\/ul>" +
-                                        "<\/div>"),
+  defaultTemplate: precompileTemplate(
+    "<ul class='selections'>" +
+    "<li>{{view view.autosuggest}}<\/li>" +
+    "<\/ul>"+
+    "<div {{bindAttr class=':results view.hasQuery::hdn'}}>" +
+       "<ul class='suggestions'>" +
+       "{{#each searchResults}}" +
+       "  <li class=\"result\">{{display}}<\/li>" +
+       "{{else}}" +
+       " <li class='no-results'>No Results.<\/li>" +
+       "{{/each}}" +
+       "<\/ul>" +
+    "<\/div>"
+  ),
+
   positionResults: function(){
     var input = this.$('input.autosuggest');
     var results = this.$('ul.suggestions');
     var position = input.position();
     results.css('position', 'absolute');
     results.css('left', position.left);
-    results.css('top', position.top + 7 + "px");
-    results.css('width', input.width() + "px");
+    results.css('top', position.top + input.height() + 7);
   },
 
   autosuggest: Ember.TextField.extend({
