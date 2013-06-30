@@ -41,3 +41,40 @@ li.result:hover{
   background-repeat: repeat-x;
   filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ff0088cc', endColorstr='#ff0077b3', GradientType=0);
 }
+
+ul.selections{
+  margin: 0;
+  padding: 0;
+  border: none;
+  overflow: hidden;
+}
+
+ul.selections li{
+  margin: 0;
+}
+
+ul.selections li.selection,
+ul.selection li.selection.blur {
+  border: solid 1px #c5c5c5;
+  background-color: #ededed;
+  color: inherit;
+}
+
+ul.selections li.selection{
+  float: left;
+  background-image: none;
+  -webkit-border-radius: 4px;
+  -moz-border-radius: 4px;
+  -ms-border-radius: 4px;
+  -o-border-radius: 4px;
+  border-radius: 4px;
+  -webkit-box-shadow: none;
+  -moz-box-shadow: none;
+  box-shadow: none;
+  font-size: inherit;
+  padding: 4px 6px;
+  margin-right: 10px;
+  font-family: inherit;
+  text-shadow: none;
+  margin-bottom: 10px;
+}
