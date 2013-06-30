@@ -42,10 +42,12 @@ EmberAutosuggest.AutoSuggestView = Ember.View.extend({
   positionResults: function(){
     var input = this.$('input.autosuggest');
     var results = this.$('ul.suggestions');
+    var selections = this.$('ul.selections');
     var position = input.position();
     results.css('position', 'absolute');
     results.css('left', position.left);
     results.css('top', position.top + input.height() + 7);
+    results.css('width', this.$('ul.selections').outerWidth() - position.left);
   },
 
   autosuggest: Ember.TextField.extend({
@@ -82,6 +84,10 @@ EmberAutosuggest.AutoSuggestView = Ember.View.extend({
       //TODO: filter out selected results
       var results = source.filter(function(item){
         return item.get(get(self, 'searchPath')).toLowerCase().search(value.toLowerCase()) !== -1;
+      }).filter(function(item){
+        return get(self, 'controller.autosuggestSelections').map(function(item){
+          return get(item, 'data');
+        }).indexOf(item) === -1;
       });
 
       if(get(results, 'length') === 0){

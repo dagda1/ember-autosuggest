@@ -60,11 +60,14 @@ module("EmberAutosuggest.AutoSuggestView", {
     App = null;
     Ember.run(function(){
       view.destroy();
+      get(controller, 'autosuggestSelections').clear();
     });
   }
 });
 
 test("autosuggest DOM elements are setup", function(){
+  expect(4);
+
   visit('/').then(function() {
     ok(view.$().hasClass('autosuggest'), "Main view has autosuggest class");
     ok(view.$('input.autosuggest').length, "suggestion input in DOM.");
@@ -74,6 +77,8 @@ test("autosuggest DOM elements are setup", function(){
 });
 
 test("a no results message is displayed when there is no source", function(){
+  expect(3);
+
   visit('/').then(function(){
     equal(view.$('ul.suggestions').is(':visible'), false, "precon - results ul is initially not displayed");
   })
@@ -84,6 +89,8 @@ test("a no results message is displayed when there is no source", function(){
 });
 
 test("Search results should be filtered", function(){
+  expect(5);
+
   equal(get(controller, 'length'), 3, "precon - 3 possible selections exist");
 
   visit('/').then(function(){
@@ -98,6 +105,8 @@ test("Search results should be filtered", function(){
 });
 
 test("A selection can be added", function(){
+  expect(6);
+
   equal(get(controller, 'autosuggestSelections.length'), 0, "precon - no selections have been added.");
   visit('/')
   .fillIn('input.autosuggest', 'Paul')
@@ -110,5 +119,20 @@ test("A selection can be added", function(){
     equal(suggestions.length, 0, "No suggestions are visible.");
     var noResults = find('.suggestions .no-results');
     equal(noResults.is(':visible'), false, "No results message is not displayed.");
+  });
+});
+
+test("Don't display a suggestion that has been selected", function(){
+  expect(3);
+
+  visit('/')
+  .fillIn('input.autosuggest', 'Paul')
+  .click('.results .suggestions li.result').then(function(){
+    var el = find('.selections li.selection');
+    equal(el.length, 1, "precon - 1 selection element has been added");
+  }).fillIn('input.autosuggest', 'Paul').then(function(){
+    var suggestions = find('.results .suggestions li.result');
+    equal(suggestions.length, 0, "no suggestion for selected item.");
+    equal(find('.results .suggestions .no-results').html(), "No Results.", "No results message is displayed.");
   });
 });
