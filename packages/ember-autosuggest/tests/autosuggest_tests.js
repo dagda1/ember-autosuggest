@@ -76,7 +76,7 @@ test("autosuggest DOM elements are setup", function(){
   });
 });
 
-test("a no results message is displayed when there is no source", function(){
+test("a no results message is displayed when there no match is found§", function(){
   expect(3);
 
   visit('/').then(function(){
