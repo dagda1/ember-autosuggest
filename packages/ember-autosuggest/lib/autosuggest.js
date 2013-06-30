@@ -8,10 +8,12 @@ EmberAutosuggest.AutoSuggestView = Ember.View.extend({
   classNameBindings: [':autosuggest'],
   minChars: 1,
   searchPath: 'name',
-  query: '',
+  query: Ember.computed.alias('controller.query'),
 
   hasQuery: Ember.computed(function(){
-    if( get(this, 'query').length > get(this, 'minChars')){
+    var query = get(this, 'query');
+
+    if( query && query.length > get(this, 'minChars')){
       this.positionResults();
       return true;
     }
@@ -21,12 +23,15 @@ EmberAutosuggest.AutoSuggestView = Ember.View.extend({
 
   defaultTemplate: precompileTemplate(
     "<ul class='selections'>" +
+    "{{#each autosuggestSelections}}" +
+    "  <li class=\"selection\">{{display}}<\/li>" +
+    "{{/each}}" +
     "<li>{{view view.autosuggest}}<\/li>" +
     "<\/ul>"+
     "<div {{bindAttr class=':results view.hasQuery::hdn'}}>" +
        "<ul class='suggestions'>" +
        "{{#each searchResults}}" +
-       "  <li class=\"result\">{{display}}<\/li>" +
+       "  <li {{action addSelection this}} class=\"result\">{{display}}<\/li>" +
        "{{else}}" +
        " <li class='no-results'>No Results.<\/li>" +
        "{{/each}}" +
@@ -47,7 +52,7 @@ EmberAutosuggest.AutoSuggestView = Ember.View.extend({
     classNameBindings: [':autosuggest'],
     searchPathBinding: 'parentView.searchPath',
     sourceBinding: 'parentView.source',
-    valueBinding: 'parentView.query',
+    valueBinding: 'controller.query',
 
     didInsertElement: function(){
       addObserver(this, 'value', this.valueDidChange);
