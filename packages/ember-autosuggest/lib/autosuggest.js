@@ -1,14 +1,20 @@
-var precompileTemplate = Ember.Handlebars.compile,
-    get = Ember.get,
+var get = Ember.get,
     set = Ember.set,
     addObserver = Ember.addObserver,
     removeObserver = Ember.removeObserver;
 
-EmberAutosuggest.AutoSuggestView = Ember.View.extend({
+window.AutoSuggestComponent = Ember.Component.extend({
   classNameBindings: [':autosuggest'],
   minChars: 1,
   searchPath: 'name',
-  query: Ember.computed.alias('controller.query'),
+  searchResults: Ember.A(),
+  query: null,
+
+  addSelection: function(selection){
+    get(this, 'searchResults').clear();
+    set(this, 'query', '');
+    get(this, 'destination').pushObject(selection);
+  },
 
   hasQuery: Ember.computed(function(){
     var query = get(this, 'query');
@@ -20,24 +26,6 @@ EmberAutosuggest.AutoSuggestView = Ember.View.extend({
 
     return false;
   }).property('query'),
-
-  defaultTemplate: precompileTemplate(
-    "<ul class='selections'>" +
-    "{{#each autosuggestSelections}}" +
-    "  <li class=\"selection\">{{display}}<\/li>" +
-    "{{/each}}" +
-    "<li>{{view view.autosuggest}}<\/li>" +
-    "<\/ul>"+
-    "<div {{bindAttr class=':results view.hasQuery::hdn'}}>" +
-       "<ul class='suggestions'>" +
-       "{{#each searchResults}}" +
-       "  <li {{action addSelection this}} class=\"result\">{{display}}<\/li>" +
-       "{{else}}" +
-       " <li class='no-results'>No Results.<\/li>" +
-       "{{/each}}" +
-       "<\/ul>" +
-    "<\/div>"
-  ),
 
   positionResults: function(){
     var input = this.$('input.autosuggest');
@@ -52,11 +40,13 @@ EmberAutosuggest.AutoSuggestView = Ember.View.extend({
 
   autosuggest: Ember.TextField.extend({
     classNameBindings: [':autosuggest'],
-    searchPathBinding: 'parentView.searchPath',
-    sourceBinding: 'parentView.source',
+    searchPathBinding: 'controller.searchPath',
+    sourceBinding: 'controller.source',
     valueBinding: 'controller.query',
 
     didInsertElement: function(){
+      Ember.assert('You must supply a source for the autosuggest component', get(this, 'controller.source'));
+      Ember.assert('You must supply a destination for the autosuggest component', get(this, 'controller.destination'));
       addObserver(this, 'value', this.valueDidChange);
     },
     willDestroyElement: function(){
@@ -85,7 +75,7 @@ EmberAutosuggest.AutoSuggestView = Ember.View.extend({
       var results = source.filter(function(item){
         return item.get(get(self, 'searchPath')).toLowerCase().search(value.toLowerCase()) !== -1;
       }).filter(function(item){
-        return get(self, 'controller.autosuggestSelections').map(function(item){
+        return get(self, 'controller.destination').map(function(item){
           return get(item, 'data');
         }).indexOf(item) === -1;
       });

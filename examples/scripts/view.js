@@ -1,5 +1,1 @@
-App.IndexView = Ember.View.extend({
-  suggester: EmberAutosuggest.AutoSuggestView.extend({
-    sourceBinding: 'controller',
-  }),
-});
+App.IndexView = Ember.View.extend({});

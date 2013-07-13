@@ -1,4 +1,5 @@
-App.IndexController = Ember.ArrayController.extend(EmberAutosuggest.AutosuggestControllerMixin,{
+App.IndexController = Ember.ArrayController.extend({
+  tags: Ember.A(),
   init: function(){  
     this._super.apply(this, arguments);
     this.set('content',  Ember.A([

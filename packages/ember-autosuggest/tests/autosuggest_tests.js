@@ -1,21 +1,51 @@
 require('ember-autosuggest/~tests/test_helper');
 
 var get = Ember.get,
-    set = Ember.set;
+    set = Ember.set,
+    precompileTemplate = Ember.Handlebars.compile;
 
 var App, find, click, fillIn, visit;
 
-var view, controller, source;
+var indexController, controller, component, source;
 
-module("EmberAutosuggest.AutoSuggestView", {
+module("AutoSuggestComponent", {
   setup: function(){
     Ember.$('<style>#ember-testing-container { position: absolute; background: white; bottom: 0; right: 0; width: 640px; height: 384px; overflow: auto; z-index: 9999; border: 1px solid #ccc; } #ember-testing { zoom: 50%; }</style>').appendTo('head');
     Ember.$('<style>.hdn{ display: none; }ul.suggestions{ border: 1px solid red; }</style>').appendTo('head');
     Ember.$('<div id="ember-testing-container"><div id="ember-testing"></div></div>').appendTo('body');
+
+    indexController = Ember.ArrayController.extend({
+      init: function(){
+        this._super.apply(this, arguments);
+        set(this, 'content',  Ember.A([
+          Ember.Object.create({id: 1, name: "Bob Hoskins"}),
+          Ember.Object.create({id: 2, name: "Michael Collins"}),
+          Ember.Object.create({id: 3, name: "Paul Cowan"}),
+        ]));
+
+        set(this, 'tags', Ember.ArrayProxy.create({content: Ember.A()}));
+      }
+    });
+
     Ember.run(function() {
       App = Ember.Application.create({
         rootElement: '#ember-testing'
       });
+
+      Ember.TEMPLATES.application = precompileTemplate(
+        "{{outlet}}"
+      );
+
+      Ember.TEMPLATES.index = precompileTemplate(
+        "<div id='ember-testing-container'>" +
+        "  <div id='ember-testing'>" + 
+        "    {{auto-suggest source=controller destination=tags}}" +
+        "  </div>" +
+        "</div>"
+      );
+
+      App.AutoSuggestComponent = window.AutoSuggestComponent;
+      App.IndexController = indexController;
 
       App.Router.map(function() {
         this.route('index', {path: '/'});
@@ -35,33 +65,18 @@ module("EmberAutosuggest.AutoSuggestView", {
     fillIn = window.fillIn;
     visit = window.visit;
 
-    controller = Ember.ArrayController.extend(EmberAutosuggest.AutosuggestControllerMixin).create();
-
-    controller.set('content',  Ember.A([
-      Ember.Object.create({id: 1, name: "Bob Hoskins"}),
-      Ember.Object.create({id: 2, name: "Michael Collins"}),
-      Ember.Object.create({id: 3, name: "Paul Cowan"}),
-    ]));
-
-    view = EmberAutosuggest.AutoSuggestView.createWithMixins({
-      source: Ember.computed.alias('controller.content')
-    });
-
-    set(view, 'controller', controller);
-
-    Ember.run(function(){
-      view.appendTo('#ember-testing');
-    });
+    // FIXME: Is there a cleaner way of getting the instances 
+    controller = App.__container__.lookup('controller:index');
+    component = App.__container__.lookup('component:autoSuggest');
   },
   teardown: function(){
+    Ember.run(function(){
+      get(controller, 'tags').clear();
+    });
     App.removeTestHelpers();
     Ember.$('#ember-testing-container, #ember-testing').remove();
     Ember.run(App, App.destroy);
     App = null;
-    Ember.run(function(){
-      view.destroy();
-      get(controller, 'autosuggestSelections').clear();
-    });
   }
 });
 
@@ -69,21 +84,25 @@ test("autosuggest DOM elements are setup", function(){
   expect(4);
 
   visit('/').then(function() {
-    ok(view.$().hasClass('autosuggest'), "Main view has autosuggest class");
-    ok(view.$('input.autosuggest').length, "suggestion input in DOM.");
-    ok(view.$('ul.selections').length, "selections ul in DOM");
-    equal(view.$('ul.suggestions').is(':visible'), false, "results ul is initially not displayed");
+    ok(Ember.$('div.autosuggest'), "autosuggest component in view");
+    ok(Ember.$('input.autosuggest').length, "suggestion input in DOM.");
+    ok(Ember.$('ul.selections').length, "selections ul in DOM");
+    equal(Ember.$('ul.suggestions').is(':visible'), false, "results ul is initially not displayed");
   });
 });
 
-test("a no results message is displayed when there no match is found§", function(){
+// test('assertion fails if no destination is set', function(){
+//   expect(1);
+// });
+// 
+test("a no results message is displayed when there no match is found", function(){
   expect(3);
 
   visit('/').then(function(){
-    equal(view.$('ul.suggestions').is(':visible'), false, "precon - results ul is initially not displayed");
+    equal(Ember.$('ul.suggestions').is(':visible'), false, "precon - results ul is initially not displayed");
   })
   .fillIn('input.autosuggest', 'xxxx').then(function(){
-    ok(view.$('ul.suggestions').is(':visible'), "results ul is displayed.");
+    ok(Ember.$('ul.suggestions').is(':visible'), "results ul is displayed.");
     equal(find('.results .suggestions .no-results').html(), "No Results.", "No results message is displayed.");
   });
 });
@@ -94,10 +113,10 @@ test("Search results should be filtered", function(){
   equal(get(controller, 'length'), 3, "precon - 3 possible selections exist");
 
   visit('/').then(function(){
-    equal(view.$('ul.suggestions').is(':visible'), false, "precon - results ul is initially not displayed");
+    equal(Ember.$('ul.suggestions').is(':visible'), false, "precon - results ul is initially not displayed");
   })
   .fillIn('input.autosuggest', 'Paul').then(function(){
-    equal(get(controller, 'searchResults.length'), 1, "Results filtered to 1 result.");
+    equal(get(component, 'searchResults.length'), 1, "Results filtered to 1 result.");
     var el = find('.results .suggestions li.result');
     equal(el.length, 1, "1 search result exists");
     equal(el.first().text(), "Paul Cowan", "1 search result is visible.");
@@ -107,11 +126,11 @@ test("Search results should be filtered", function(){
 test("A selection can be added", function(){
   expect(6);
 
-  equal(get(controller, 'autosuggestSelections.length'), 0, "precon - no selections have been added.");
+  equal(get(controller, 'tags.length'), 0, "precon - no selections have been added.");
   visit('/')
   .fillIn('input.autosuggest', 'Paul')
   .click('.results .suggestions li.result').then(function(){
-    equal(get(controller, 'autosuggestSelections.length'), 1, "1 selection has been added.");
+    equal(get(controller, 'tags.length'), 1, "1 selection has been added.");
     var el = find('.selections li.selection');
     equal(el.length, 1, "1 selection element has been added");
     equal(el.first().text(), "Paul Cowan", "Correct text displayed in element.");
