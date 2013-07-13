@@ -108,7 +108,7 @@ test("a no results message is displayed when there no match is found", function(
 });
 
 test("Search results should be filtered", function(){
-  expect(5);
+  expect(4);
 
   equal(get(controller, 'length'), 3, "precon - 3 possible selections exist");
 
@@ -116,7 +116,6 @@ test("Search results should be filtered", function(){
     equal(Ember.$('ul.suggestions').is(':visible'), false, "precon - results ul is initially not displayed");
   })
   .fillIn('input.autosuggest', 'Paul').then(function(){
-    equal(get(component, 'searchResults.length'), 1, "Results filtered to 1 result.");
     var el = find('.results .suggestions li.result');
     equal(el.length, 1, "1 search result exists");
     equal(el.first().text(), "Paul Cowan", "1 search result is visible.");
