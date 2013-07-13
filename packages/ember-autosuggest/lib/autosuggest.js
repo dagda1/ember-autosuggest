@@ -83,9 +83,4 @@ window.AutoSuggestComponent = Ember.Component.extend({
       return Ember.Object.create({display: get(item, get(self, 'searchPath')), data: item});
     }));
   },
-
-  autosuggest: Ember.TextField.extend({
-    classNameBindings: [':autosuggest'],
-    valueBinding: 'controller.query', 
-  }),
 });
