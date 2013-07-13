@@ -8,12 +8,12 @@ Ember.TEMPLATES['components/auto-suggest'] = precompileTemplate(
   "    {{display}}" +
   "  <\/li>" +
   "{{/each}}" +
-  "<li>{{input type='text' value=query class='autosuggest'}}<\/li>" +
+  "<li>{{view view.autosuggest valueBinding=query class='autosuggest'}}<\/li>" +
   "<\/ul>"+
   "<div {{bindAttr class=':results hasQuery::hdn'}}>" +
      "<ul class='suggestions'>" +
      "{{#each searchResults}}" +
-     "  <li {{action addSelection this}} class=\"result\">{{display}}<\/li>" +
+     "  <li {{action addSelection this}} {{bindAttr class=\":result active\"}}>{{display}}<\/li>" +
      "{{else}}" +
      " <li class='no-results'>No Results.<\/li>" +
      "{{/each}}" +

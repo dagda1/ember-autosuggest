@@ -1,5 +1,6 @@
 var get = Ember.get,
     set = Ember.set,
+    setEach = Ember.setEach,
     addObserver = Ember.addObserver,
     removeObserver = Ember.removeObserver;
 
@@ -17,6 +18,7 @@ window.AutoSuggestComponent = Ember.Component.extend({
   addSelection: function(selection){
     set(this, 'query', '');
     get(this, 'destination').addObject(selection);
+    set(this, 'selectionIndex', -1);
   },
 
   hasQuery: Ember.computed(function(){
@@ -50,11 +52,8 @@ window.AutoSuggestComponent = Ember.Component.extend({
         query = get(this, 'query'),
         self = this;
 
-    if(!source){
-      return Ember.A();
-    }
-
     if((!query) || (query.length <= get(this, 'minChars'))){
+      set(this, 'selectionIndex', -1);
       return Ember.A();
     }
 
@@ -78,4 +77,91 @@ window.AutoSuggestComponent = Ember.Component.extend({
       return Ember.compare(get(a, 'display'), get(b, 'display'));
     });
   }).property('query'),
+
+  selectionIndex: -1,
+
+  moveSelection: function(direction){
+    var selectionIndex = get(this, 'selectionIndex'),
+        isUp = direction === 'up',
+        isDown = !isUp,
+        searchResultsLength = get(this, 'searchResults.length');
+
+    get(this, 'searchResults').setEach('active', false); 
+
+    if(!searchResultsLength){
+      set(this, 'selectionIndex', -1);
+      return;
+    }
+
+    if(isUp && selectionIndex <= 0){
+      selectionIndex =  0;
+    }
+    else if(isDown && selectionIndex === searchResultsLength -1){
+      selectionIndex = searchResultsLength -1;
+    }else if(isDown){
+      selectionIndex++;
+    }else{
+      selectionIndex--;
+    }
+
+    var active = get(this, 'searchResults').objectAt(selectionIndex);
+
+    set(this, 'selectionIndex', selectionIndex);
+
+    set(active, 'active', true);
+  },
+
+  selectActive: function(){
+    var selectionIndex = get(this, 'selectionIndex'),
+        searchResultsLength = get(this, 'searchResults.length');
+
+    if(!searchResultsLength){
+      return;
+    }
+
+    var active = get(this, 'searchResults').find(function(item){
+      return get(item, 'active');
+    });
+
+    if(!active){
+      return;
+    }
+
+    this.addSelection(active);
+  },
+
+  autosuggest: Ember.TextField.extend({
+    KEY_DOWN: 40,
+    KEY_UP: 38,
+    COMMA: 188,
+    TAB: 9,
+    ENTER: 13,
+
+    init: function(){
+      this._super.apply(this, arguments);
+      this.set('allowedKeyCodes', [this.KEY_UP, this.KEY_DOWN, this.COMMA, this.TAB, this.ENTER]);
+    },
+
+    keyDown: function(e){
+      var keyCode = e.keyCode;
+
+      if(!this.get('allowedKeyCodes').contains(keyCode)){
+        return;
+      }
+
+      switch(keyCode){
+        case this.KEY_UP:
+          get(this, 'controller').moveSelection('up');
+          break;
+        case this.KEY_DOWN:
+          get(this, 'controller').moveSelection('down');
+          break;
+        case this.ENTER:
+          get(this, 'controller').selectActive(); 
+          break;
+        default:
+          console.log(keyCode);
+      }
+    },
+  }),
 });

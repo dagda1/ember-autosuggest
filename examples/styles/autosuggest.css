@@ -27,7 +27,7 @@ li.result{
   cursor: pointer;
 }
 
-li.result:hover{
+li.result:hover, li.result.active{
   cursor: pointer;
 	color: #fff;
   text-decoration: none;
