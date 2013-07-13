@@ -72,8 +72,10 @@ window.AutoSuggestComponent = Ember.Component.extend({
       return Ember.A();
     }
 
-    return Ember.A(results.map(function(item){
+   return Ember.A(results.map(function(item){
       return Ember.Object.create({display: get(item, get(self, 'searchPath')), data: item});
-    }));
+    })).sort(function(a, b){
+      return Ember.compare(get(a, 'display'), get(b, 'display'));
+    });
   }).property('query'),
 });

@@ -4,6 +4,7 @@
     <title>Ember.Autosuggest by Paul Cowan</title>
 
     <link rel="stylesheet" type="text/css" href="styles/default.css" />
+    <link rel="stylesheet" type="text/css" href="styles/autosuggest.css" />
 
     <script type="text/javascript" src="/lib/jquery-1.9.0.js"></script>
     <script type="text/javascript" src="/lib/handlebars-1.0.0.js"></script>
@@ -22,14 +23,16 @@
 </head>
 <body>
 
-    <script type="text/x-handlebars">
-        {{outlet}}
-    </script>
+  <script type="text/x-handlebars">
+      {{outlet}}
+  </script>
 
-    <script type="text/x-handlebars" data-template-name="index">
-      <h1>Demo</h1>
-      {{auto-suggest source=controller destination=tags}}
-    </script>
+  <script type="text/x-handlebars" data-template-name="index">
+    <h1>Demo</h1>
+    <div class="tags">
+      <label>Tags:</label> {{auto-suggest source=controller destination=tags minChars=0}}
+    </div>
+  </script>
 
 </body>
 </html>
