@@ -17,11 +17,14 @@ Declared in a template using the new [Ember component](http://emberjs.com/api/cl
 - Specity  a `destination` binding that your selections will be bound to.
 
 ### Arguments
-- `searchPath` - Specify thie property for each object in the `source` list that will be used to auto suggest, default is `name`.
+- `searchPath` - Specify thie property for each object in the `source` list that will be used to auto suggest, the default is `name`.
+
 ```
 {{auto-suggest source=controller destination=tags searchPath=make}}
+
 ```
-- `minChars` - Specify how many characters the user must enter into the input before the search is triggered, default is `0`.
+- `minChars` - Specify how many characters the user must enter into the input before the search is triggered, the default is `0`.
+
 ```
 {{auto-suggest source=controller destination=tags minChars=0}}
 ```
