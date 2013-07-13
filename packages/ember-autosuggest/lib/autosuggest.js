@@ -16,7 +16,7 @@ window.AutoSuggestComponent = Ember.Component.extend({
 
   addSelection: function(selection){
     set(this, 'query', '');
-    get(this, 'destination').pushObject(selection);
+    get(this, 'destination').addObject(selection);
   },
 
   hasQuery: Ember.computed(function(){
