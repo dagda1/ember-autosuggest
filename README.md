@@ -2,8 +2,6 @@ ember-autosuggest
 =================
 ![ember autosuggest](autosuggest.png)
 
-Very loosely based on [this](https://github.com/wuyuntao/jquery-autosuggest) jQuery plugin.
-
 This is a work in progress.  Keyboard navigation is currently being developed.
 
 This Plug-In will auto-complete or auto-suggest completed search queries for you as you type.
