@@ -37,7 +37,7 @@ Declared in a template using the new [Ember component](http://emberjs.com/api/cl
 
 ## View the demo
 
-Run ```bundle exec rackup``` and open [http://localhost:9292](http://localhost:9292/examples/index.html) in a browser.
+Run ```bundle exec rackup``` and open [http://localhost:9292/examples/index.html](http://localhost:9292/examples/index.html) in a browser.
 
 ## Running unit tests
 
