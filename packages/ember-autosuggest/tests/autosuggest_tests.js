@@ -136,7 +136,7 @@ test("A selection can be added", function(){
   });
 });
 
-test("Don't display a suggestion that has been selected", function(){
+test("Don't display a suggestion that has already been selected", function(){
   expect(3);
 
   visit('/')
