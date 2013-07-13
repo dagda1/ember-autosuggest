@@ -17,7 +17,7 @@ Declared in a template using the new [Ember component](http://emberjs.com/api/cl
 - Specity  a `destination` binding that your selections will be bound to.
 
 ### Arguments
-- `searchPath` - Specify thie property for each object in the `source` list that will be used to auto suggest, the default is `name`.
+- `searchPath` - Specify the property for each object in the `source` list that will be used to auto suggest, the default is `name`.
 
 ```
 {{auto-suggest source=controller destination=tags searchPath=make}}
