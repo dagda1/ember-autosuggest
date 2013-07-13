@@ -91,10 +91,6 @@ test("autosuggest DOM elements are setup", function(){
   });
 });
 
-// test('assertion fails if no destination is set', function(){
-//   expect(1);
-// });
-// 
 test("a no results message is displayed when no match is found", function(){
   expect(3);
 
