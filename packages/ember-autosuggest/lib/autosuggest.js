@@ -10,8 +10,8 @@ window.AutoSuggestComponent = Ember.Component.extend({
   query: null,
 
   didInsertElement: function(){
-    Ember.assert('You must supply a source for the autosuggest component', get(this, 'controller.source'));
-    Ember.assert('You must supply a destination for the autosuggest component', get(this, 'controller.destination'));
+    Ember.assert('You must supply a source for the autosuggest component', get(this, 'source'));
+    Ember.assert('You must supply a destination for the autosuggest component', get(this, 'destination'));
   },
 
   addSelection: function(selection){
@@ -59,7 +59,7 @@ window.AutoSuggestComponent = Ember.Component.extend({
     var results = source.filter(function(item){
       return item.get(get(self, 'searchPath')).toLowerCase().search(query.toLowerCase()) !== -1;
     }).filter(function(item){
-      return get(self, 'controller.destination').map(function(item){
+      return get(self, 'destination').map(function(item){
         return get(item, 'data');
       }).indexOf(item) === -1;
     });
