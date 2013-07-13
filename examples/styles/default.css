@@ -88,3 +88,18 @@ ul.selections li.selection{
   font-family: inherit;
   text-shadow: none;
 }
+
+ul.selections li.selection .as-close{
+  float: right;
+  margin: 1px 0 0 7px;
+  padding: 0 2px;
+  cursor: pointer;
+  color: #5491be;
+  font-family: "Helvetica",helvetica,arial,sans-serif;
+  font-size: 12px;
+  font-weight: bold;
+  -webkit-transition: color .1s ease-in;
+  color: #777;
+  position: relative;
+  top: -5px;
+}

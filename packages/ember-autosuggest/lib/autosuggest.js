@@ -41,6 +41,10 @@ window.AutoSuggestComponent = Ember.Component.extend({
     results.css('width', this.$('ul.selections').outerWidth() - position.left);
   },
 
+  removeSelection: function(item){
+    get(this, 'destination').removeObject(item);
+  },
+
   searchResults: Ember.computed(function(){
     var source = get(this, 'source'),
         query = get(this, 'query'),

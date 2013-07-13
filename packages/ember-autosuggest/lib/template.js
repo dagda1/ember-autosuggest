@@ -3,7 +3,10 @@ var precompileTemplate = Ember.Handlebars.compile;
 Ember.TEMPLATES['components/auto-suggest'] = precompileTemplate(
   "<ul class='selections'>" +
   "{{#each destination}}" +
-  "  <li class=\"selection\">{{display}}<\/li>" +
+  "  <li class=\"selection\">" +
+  "    <a class=\"as-close\" {{action removeSelection this}}>x</a>" +
+  "    {{display}}" +
+  "  <\/li>" +
   "{{/each}}" +
   "<li>{{input type='text' value=query class='autosuggest'}}<\/li>" +
   "<\/ul>"+

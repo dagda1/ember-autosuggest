@@ -128,7 +128,7 @@ test("A selection can be added", function(){
     equal(get(controller, 'tags.length'), 1, "1 selection has been added.");
     var el = find('.selections li.selection');
     equal(el.length, 1, "1 selection element has been added");
-    equal(el.first().text(), "Paul Cowan", "Correct text displayed in element.");
+    ok(/Paul Cowan/.test(el.first().text()), "Correct text displayed in element.");
     var suggestions = find('.results .suggestions li.result');
     equal(suggestions.length, 0, "No suggestions are visible.");
     var noResults = find('.suggestions .no-results');
@@ -148,5 +148,22 @@ test("Don't display a suggestion that has already been selected", function(){
     var suggestions = find('.results .suggestions li.result');
     equal(suggestions.length, 0, "no suggestion for selected item.");
     equal(find('.results .suggestions .no-results').html(), "No Results.", "No results message is displayed.");
+  });
+});
+
+test("A selection can be removed", function(){
+  expect(4);
+
+  visit('/')
+  .fillIn('input.autosuggest', 'Paul')
+  .click('.results .suggestions li.result').then(function(){
+    var el = find('.selections li.selection');
+    equal(el.length, 1, "precon - 1 selection element has been added");
+    var close = find('.as-close');
+    equal(close.length, 1, "precon - only one close link is on the page");
+  }).click('.as-close').then(function(){
+    var el = find('.selections li.selection');
+    equal(el.length, 0, "precon - there are now no suggestions after removeSelection.");
+    equal(get(controller, 'tags.length'), 0, "The controller has 0 tags after removeSelection.");
   });
 });
