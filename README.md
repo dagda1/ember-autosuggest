@@ -2,9 +2,9 @@ ember-autosuggest
 =================
 ![ember autosuggest](autosuggest.png)
 
-This is a work in progress.  Keyboard navigation is currently being developed.
-
 This Plug-In will auto-complete or auto-suggest completed search queries for you as you type.
+
+This is a work in progress.  Keyboard navigation is currently being developed.
 
 ## Usage
 Declared in a template using the new [Ember component](http://emberjs.com/api/classes/Ember.Component.html) syntax.
@@ -21,7 +21,7 @@ Declared in a template using the new [Ember component](http://emberjs.com/api/cl
 {{auto-suggest source=controller destination=tags searchPath=make}}
 
 ```
-- `minChars` - Specify how many characters the user must enter into the input before the search is triggered, the default is `0`.
+- `minChars` - Specify how many characters the user must enter into the input before the search is triggered, the default is `1`.
 
 ```
 {{auto-suggest source=controller destination=tags minChars=0}}
