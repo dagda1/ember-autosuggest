@@ -1,5 +1,6 @@
 App.IndexController = Ember.ArrayController.extend({
   tags: Ember.A(),
+  carsOwned: Ember.A(),
   init: function(){  
     this._super.apply(this, arguments);
     this.set('content',  Ember.A([
@@ -38,6 +39,12 @@ App.IndexController = Ember.ArrayController.extend({
       Ember.Object.create({id: 33, name: "Zebras"}),
     ]));
 
-
+    this.set('cars',  Ember.A([
+      Ember.Object.create({id: 1, make: "Alpha Romeo"}),
+      Ember.Object.create({id: 2, make: "Porche"}),
+      Ember.Object.create({id: 3, make: "Austin Martin"}),
+      Ember.Object.create({id: 4, make: "Lamborghini"}),
+      Ember.Object.create({id: 5, make: "Chevrolet"}),
+    ]));
   }
 });
