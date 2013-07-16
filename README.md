@@ -4,7 +4,8 @@ ember-autosuggest
 
 This Plug-In will auto-complete or auto-suggest completed search queries for you as you type.
 
-There is very basic keyboard navigation using the up and down keys to scroll up and down the results and enter adds the selection.
+There is very basic keyboard navigation using the up and down keys to scroll up and down the results and enter adds the selection,
+while hitting escape hides the autocomplete menu.
 
 This is a work in progress. 
 

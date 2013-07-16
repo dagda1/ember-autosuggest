@@ -66,6 +66,7 @@ window.AutoSuggestComponent = Ember.Component.extend({
     var results = this.$('ul.suggestions');
     var selections = this.$('ul.selections');
     var position = input.position();
+    this.$('.results').removeClass('hdn');
     results.css('position', 'absolute');
     results.css('left', position.left);
     results.css('top', position.top + input.height() + 7);
@@ -104,6 +105,18 @@ window.AutoSuggestComponent = Ember.Component.extend({
       return Ember.compare(get(a, searchPath), get(b, searchPath));
     }));
   }).property('query'),
+
+  hideResults: function(){
+    var searchResults = get(this, 'searchResults');
+
+    set(this, 'selectionIndex', -1);
+
+    if(!get(searchResults, 'length')){
+      return;
+    }
+
+    this.$('.results').addClass('hdn');
+  },
 
   moveSelection: function(direction){
     var selectionIndex = get(this, 'selectionIndex'),
@@ -179,10 +192,11 @@ window.AutoSuggestComponent = Ember.Component.extend({
     COMMA: 188,
     TAB: 9,
     ENTER: 13,
+    ESCAPE: 27,
 
     init: function(){
       this._super.apply(this, arguments);
-      this.set('allowedKeyCodes', [this.KEY_UP, this.KEY_DOWN, this.COMMA, this.TAB, this.ENTER]);
+      this.set('allowedKeyCodes', [this.KEY_UP, this.KEY_DOWN, this.COMMA, this.TAB, this.ENTER, this.ESCAPE]);
     },
 
     keyDown: function(e){
@@ -192,15 +206,20 @@ window.AutoSuggestComponent = Ember.Component.extend({
         return;
       }
 
+      var controller = get(this, 'controller');
+
       switch(keyCode){
         case this.KEY_UP:
-          get(this, 'controller').moveSelection('up');
+          controller.moveSelection('up');
           break;
         case this.KEY_DOWN:
-          get(this, 'controller').moveSelection('down');
+          controller.moveSelection('down');
           break;
         case this.ENTER:
-          get(this, 'controller').selectActive(); 
+          controller.selectActive(); 
+          break;
+        case this.ESCAPE:
+          controller.hideResults();
           break;
         default:
           console.log(keyCode);
