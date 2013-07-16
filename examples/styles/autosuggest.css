@@ -27,7 +27,7 @@ li.result{
   cursor: pointer;
 }
 
-li.result.hover, li.result.active{
+li.result.hover, li.result.active, li.result.hover span, li.result.active span{
   cursor: pointer;
 	color: #fff;
   text-decoration: none;
