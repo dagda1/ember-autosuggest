@@ -24,6 +24,7 @@ window.AutoSuggestComponent = Ember.Component.extend({
 
     if(active || active.length){
       active.setEach('active', false);
+      set(this, 'selectionIndex', -1);
     }
 
     this.$('ul.suggestions li').removeClass('hover');
@@ -31,11 +32,16 @@ window.AutoSuggestComponent = Ember.Component.extend({
     el.addClass('hover');
   },
 
+  mouseOut: function(evt){
+    this.$('ul.suggestions li').removeClass('hover');
+  },
+
   didInsertElement: function(){
     Ember.assert('You must supply a source for the autosuggest component', get(this, 'source'));
     Ember.assert('You must supply a destination for the autosuggest component', get(this, 'destination'));
 
     this.$('ul.suggestions').on('mouseover', this.mouseOver.bind(this));
+    this.$('ul.suggestions').on('mouseout', this.mouseOut.bind(this));
   },
 
   addSelection: function(selection){
