@@ -9,10 +9,33 @@ window.AutoSuggestComponent = Ember.Component.extend({
   minChars: 1,
   searchPath: 'name',
   query: null,
+  selectionIndex: -1,
+
+  mouseOver: function(evt){
+    var el = this.$(evt.target);
+
+    if(evt.target.tagName.toLowerCase() !== 'ul' && !el.hasClass('result')){
+      return;
+    }
+
+    var active = get(this, 'searchResults').filter(function(item){
+                   return get(item, 'active');
+                 });
+
+    if(active || active.length){
+      active.setEach('active', false);
+    }
+
+    this.$('ul.suggestions li').removeClass('hover');
+
+    el.addClass('hover');
+  },
 
   didInsertElement: function(){
     Ember.assert('You must supply a source for the autosuggest component', get(this, 'source'));
     Ember.assert('You must supply a destination for the autosuggest component', get(this, 'destination'));
+
+    this.$('ul.suggestions').on('mouseover', this.mouseOver.bind(this));
   },
 
   addSelection: function(selection){
@@ -76,19 +99,35 @@ window.AutoSuggestComponent = Ember.Component.extend({
     }));
   }).property('query'),
 
-  selectionIndex: -1,
-
   moveSelection: function(direction){
     var selectionIndex = get(this, 'selectionIndex'),
         isUp = direction === 'up',
         isDown = !isUp,
-        searchResultsLength = get(this, 'searchResults.length');
+        searchResults = get(this, 'searchResults'),
+        searchResultsLength = get(searchResults, 'length'),
+        searchPath = get(this, 'searchPath'),
+        hoverEl;
 
-    get(this, 'searchResults').setEach('active', false); 
+    searchResults.setEach('active', false); 
 
     if(!searchResultsLength){
       set(this, 'selectionIndex', -1);
       return;
+    }
+
+    hoverEl = this.$('li.result.hover');
+
+    if(hoverEl.length){
+      var text = Ember.$('span', hoverEl).text(),
+          selected = searchResults.find(function(item){
+                        return get(item, searchPath) === text;
+                     });
+
+      selectionIndex = searchResults.indexOf(selected);
+
+      this.$('ul.suggestions li').removeClass('hover');
+
+      this.$('input.autosuggest').focus();
     }
 
     if(isUp && selectionIndex <= 0){

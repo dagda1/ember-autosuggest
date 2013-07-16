@@ -112,9 +112,9 @@ test("Search results should be filtered", function(){
     equal(Ember.$('ul.suggestions').is(':visible'), false, "precon - results ul is initially not displayed");
   })
   .fillIn('input.autosuggest', 'Paul').then(function(){
-    var el = find('.results .suggestions li.result');
+    var el = find('.results .suggestions li.result span');
     equal(el.length, 1, "1 search result exists");
-    equal(el.first().text(), "Paul Cowan", "1 search result is visible.");
+    equal(el.text(), "Paul Cowan", "1 search result is visible.");
   });
 });
 
