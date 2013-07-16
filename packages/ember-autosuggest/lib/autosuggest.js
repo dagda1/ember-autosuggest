@@ -62,15 +62,19 @@ window.AutoSuggestComponent = Ember.Component.extend({
   }).property('query'),
 
   positionResults: function(){
-    var input = this.$('input.autosuggest');
-    var results = this.$('ul.suggestions');
-    var selections = this.$('ul.selections');
-    var position = input.position();
-    this.$('.results').removeClass('hdn');
-    results.css('position', 'absolute');
-    results.css('left', position.left);
-    results.css('top', position.top + input.height() + 7);
-    results.css('width', this.$('ul.selections').outerWidth() - position.left);
+    var results = this.$('.results');
+
+    var input = this.$('input.autosuggest'),
+        suggestions = this.$('ul.suggestions'),
+        selections = this.$('ul.selections'),
+        position = input.position();
+
+    results.removeClass('hdn');
+
+    suggestions.css('position', 'absolute');
+    suggestions.css('left', position.left);
+    suggestions.css('top', position.top + input.height() + 7);
+    suggestions.css('width', this.$('ul.selections').outerWidth() - position.left);
   },
 
   removeSelection: function(item){
@@ -112,6 +116,7 @@ window.AutoSuggestComponent = Ember.Component.extend({
     set(this, 'selectionIndex', -1);
 
     if(!get(searchResults, 'length')){
+      this.$('.no-results').addClass('hdn');
       return;
     }
 
