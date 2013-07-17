@@ -11,74 +11,12 @@ window.AutoSuggestComponent = Ember.Component.extend({
   query: null,
   selectionIndex: -1,
 
-  mouseOver: function(evt){
-    var el = this.$(evt.target);
-
-    if(evt.target.tagName.toLowerCase() !== 'ul' && !el.hasClass('result')){
-      return;
-    }
-
-    var active = get(this, 'searchResults').filter(function(item){
-                   return get(item, 'active');
-                 });
-
-    if(active || active.length){
-      active.setEach('active', false);
-      set(this, 'selectionIndex', -1);
-    }
-
-    this.$('ul.suggestions li').removeClass('hover');
-
-    el.addClass('hover');
-  },
-
-  mouseOut: function(evt){
-    this.$('ul.suggestions li').removeClass('hover');
-  },
-
   didInsertElement: function(){
     Ember.assert('You must supply a source for the autosuggest component', get(this, 'source'));
     Ember.assert('You must supply a destination for the autosuggest component', get(this, 'destination'));
 
     this.$('ul.suggestions').on('mouseover', this.mouseOver.bind(this));
     this.$('ul.suggestions').on('mouseout', this.mouseOut.bind(this));
-  },
-
-  addSelection: function(selection){
-    set(this, 'query', '');
-    get(this, 'destination').addObject(selection);
-    set(this, 'selectionIndex', -1);
-  },
-
-  hasQuery: Ember.computed(function(){
-    var query = get(this, 'query');
-
-    if(query && query.length > get(this, 'minChars')){
-      this.positionResults();
-      return true;
-    }
-
-    return false;
-  }).property('query'),
-
-  positionResults: function(){
-    var results = this.$('.results');
-
-    var input = this.$('input.autosuggest'),
-        suggestions = this.$('ul.suggestions'),
-        selections = this.$('ul.selections'),
-        position = input.position();
-
-    results.removeClass('hdn');
-
-    suggestions.css('position', 'absolute');
-    suggestions.css('left', position.left);
-    suggestions.css('top', position.top + input.height() + 7);
-    suggestions.css('width', this.$('ul.selections').outerWidth() - position.left);
-  },
-
-  removeSelection: function(item){
-    get(this, 'destination').removeObject(item);
   },
 
   searchResults: Ember.computed(function(){
@@ -122,6 +60,28 @@ window.AutoSuggestComponent = Ember.Component.extend({
 
     this.$('.results').addClass('hdn');
   },
+
+  addSelection: function(selection){
+    set(this, 'query', '');
+    get(this, 'destination').addObject(selection);
+    set(this, 'selectionIndex', -1);
+  },
+
+  hasQuery: Ember.computed(function(){
+    var query = get(this, 'query');
+
+    if(query && query.length > get(this, 'minChars')){
+      this.positionResults();
+      return true;
+    }
+
+    return false;
+  }).property('query'),
+
+  removeSelection: function(item){
+    get(this, 'destination').removeObject(item);
+  },
+
 
   moveSelection: function(direction){
     var selectionIndex = get(this, 'selectionIndex'),
@@ -189,6 +149,47 @@ window.AutoSuggestComponent = Ember.Component.extend({
     }
 
     this.addSelection(active);
+  },
+
+  mouseOver: function(evt){
+    var el = this.$(evt.target);
+
+    if(evt.target.tagName.toLowerCase() !== 'ul' && !el.hasClass('result')){
+      return;
+    }
+
+    var active = get(this, 'searchResults').filter(function(item){
+                   return get(item, 'active');
+                 });
+
+    if(active || active.length){
+      active.setEach('active', false);
+      set(this, 'selectionIndex', -1);
+    }
+
+    this.$('ul.suggestions li').removeClass('hover');
+
+    el.addClass('hover');
+  },
+
+  mouseOut: function(evt){
+    this.$('ul.suggestions li').removeClass('hover');
+  },
+
+  positionResults: function(){
+    var results = this.$('.results');
+
+    var input = this.$('input.autosuggest'),
+        suggestions = this.$('ul.suggestions'),
+        selections = this.$('ul.selections'),
+        position = input.position();
+
+    results.removeClass('hdn');
+
+    suggestions.css('position', 'absolute');
+    suggestions.css('left', position.left);
+    suggestions.css('top', position.top + input.height() + 7);
+    suggestions.css('width', this.$('ul.selections').outerWidth() - position.left);
   },
 
   autosuggest: Ember.TextField.extend({

@@ -167,3 +167,14 @@ test("A selection can be removed", function(){
     equal(get(controller, 'tags.length'), 0, "The controller has 0 tags after removeSelection.");
   });
 });
+
+// FIXME: reinstate when the keyEvent test helper gets a
+// test("the down key will move to the first selection", function(){
+//   visit('/')
+//   .fillIn('input.autosuggest', 'Paul')
+//   .keyEvent('input.autosuggest', 'keydown', 40).then(function(){
+//     var el = find('.selections li.selection');
+// 
+//     ok(el.hasClass('active'), "keydown selected the first item");
+//   });
+// });
