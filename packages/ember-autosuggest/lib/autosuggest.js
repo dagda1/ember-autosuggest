@@ -54,6 +54,7 @@ window.AutoSuggestComponent = Ember.Component.extend({
     function(e){
       console.log(e.message);
       console.log(e.stack);
+      throw e;
     });
   },
 
