@@ -40,7 +40,7 @@ App.IndexController = Ember.ArrayController.extend({
     ]));
 
     this.set('cars',  Ember.A([
-      Ember.Object.create({id: 1, make: "Alpha Romeo"}),
+      Ember.Object.create({id: 1, make: "Alpha Romero"}),
       Ember.Object.create({id: 2, make: "Porche"}),
       Ember.Object.create({id: 3, make: "Austin Martin"}),
       Ember.Object.create({id: 4, make: "Lamborghini"}),

@@ -11,6 +11,12 @@ window.AutoSuggestComponent = Ember.Component.extend({
   query: null,
   selectionIndex: -1,
 
+  init: function(){
+    this._super.apply(this, arguments);
+    addObserver(this, 'query', this.queryDidChange);
+    set(this, 'displayResults', Ember.A());
+  },
+
   didInsertElement: function(){
     Ember.assert('You must supply a source for the autosuggest component', get(this, 'source'));
     Ember.assert('You must supply a destination for the autosuggest component', get(this, 'destination'));
@@ -19,15 +25,41 @@ window.AutoSuggestComponent = Ember.Component.extend({
     this.$('ul.suggestions').on('mouseout', this.mouseOut.bind(this));
   },
 
-  searchResults: Ember.computed(function(){
-    var source = get(this, 'source'),
-        query = get(this, 'query'),
+  _source: Ember.computed(function(){
+    var source = get(this, 'source');
+
+    return Ember.RSVP.Promise(function(resolve, reject){
+      if(!source.then){
+        resolve(source);
+      }else{
+        source.then(resolve, reject);
+      }
+    });
+  }).property('source'),
+
+  queryDidChange: function(){
+    var query = get(this, 'query'),
+        source = get(this, '_source'),
+        displayResults = get(this, 'displayResults'),
         self = this;
 
     if((!query) || (query.length <= get(this, 'minChars'))){
       set(this, 'selectionIndex', -1);
-      return Ember.A();
+      return displayResults.clear();
     }
+
+    source.then(function(results){
+      self.processResults(query, results);
+    },
+    function(e){
+      console.log(e.message);
+      console.log(e.stack);
+    });
+  },
+
+  processResults: function(query, source){
+    var self = this,
+        displayResults = get(this, 'displayResults');
 
     this.positionResults();
 
@@ -38,22 +70,24 @@ window.AutoSuggestComponent = Ember.Component.extend({
     });
 
     if(get(results, 'length') === 0){
-      return Ember.A();
+      return displayResults.clear();
     }
 
     var searchPath = get(this, 'searchPath');
 
-    return Ember.A(results.sort(function(a, b){
+    displayResults.clear();
+
+    displayResults.pushObjects(Ember.A(results.sort(function(a, b){
       return Ember.compare(get(a, searchPath), get(b, searchPath));
-    }));
-  }).property('query'),
+    })));
+  },
 
   hideResults: function(){
-    var searchResults = get(this, 'searchResults');
+    var displayResults = get(this, 'displayResults');
 
     set(this, 'selectionIndex', -1);
 
-    if(!get(searchResults, 'length')){
+    if(!get(displayResults, 'length')){
       this.$('.no-results').addClass('hdn');
       return;
     }
@@ -87,14 +121,14 @@ window.AutoSuggestComponent = Ember.Component.extend({
     var selectionIndex = get(this, 'selectionIndex'),
         isUp = direction === 'up',
         isDown = !isUp,
-        searchResults = get(this, 'searchResults'),
-        searchResultsLength = get(searchResults, 'length'),
+        displayResults = get(this, 'displayResults'),
+        displayResultsLength = get(displayResults, 'length'),
         searchPath = get(this, 'searchPath'),
         hoverEl;
 
-    searchResults.setEach('active', false); 
+    displayResults.setEach('active', false); 
 
-    if(!searchResultsLength){
+    if(!displayResultsLength){
       set(this, 'selectionIndex', -1);
       return;
     }
@@ -103,11 +137,11 @@ window.AutoSuggestComponent = Ember.Component.extend({
 
     if(hoverEl.length){
       var text = Ember.$('span', hoverEl).text(),
-          selected = searchResults.find(function(item){
+          selected = displayResults.find(function(item){
                         return get(item, searchPath) === text;
                      });
 
-      selectionIndex = searchResults.indexOf(selected);
+      selectionIndex = displayResults.indexOf(selected);
 
       this.$('ul.suggestions li').removeClass('hover');
 
@@ -117,15 +151,15 @@ window.AutoSuggestComponent = Ember.Component.extend({
     if(isUp && selectionIndex <= 0){
       selectionIndex =  0;
     }
-    else if(isDown && selectionIndex === searchResultsLength -1){
-      selectionIndex = searchResultsLength -1;
+    else if(isDown && selectionIndex === displayResultsLength -1){
+      selectionIndex = displayResultsLength -1;
     }else if(isDown){
       selectionIndex++;
     }else{
       selectionIndex--;
     }
 
-    var active = get(this, 'searchResults').objectAt(selectionIndex);
+    var active = get(this, 'displayResults').objectAt(selectionIndex);
 
     set(this, 'selectionIndex', selectionIndex);
 
@@ -134,13 +168,13 @@ window.AutoSuggestComponent = Ember.Component.extend({
 
   selectActive: function(){
     var selectionIndex = get(this, 'selectionIndex'),
-        searchResultsLength = get(this, 'searchResults.length');
+        displayResultsLength = get(this, 'displayResults.length');
 
-    if(!searchResultsLength){
+    if(!displayResultsLength){
       return;
     }
 
-    var active = get(this, 'searchResults').find(function(item){
+    var active = get(this, 'displayResults').find(function(item){
       return get(item, 'active');
     });
 
@@ -158,7 +192,7 @@ window.AutoSuggestComponent = Ember.Component.extend({
       return;
     }
 
-    var active = get(this, 'searchResults').filter(function(item){
+    var active = get(this, 'displayResults').filter(function(item){
                    return get(item, 'active');
                  });
 
