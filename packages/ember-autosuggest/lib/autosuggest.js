@@ -29,7 +29,12 @@ window.AutoSuggestComponent = Ember.Component.extend({
     var source = get(this, 'source');
 
     return Ember.RSVP.Promise(function(resolve, reject){
-      if(!source.then){
+      // FIXME: Is there a better way to know if this is an
+      // ember-data class?
+      if(('undefined' !== typeof DS) && (source.hasOwnProperty('__super__'))){
+        source.find().then(resolve, reject);
+      }
+      else if(!source.then){
         resolve(source);
       }else{
         source.then(resolve, reject);

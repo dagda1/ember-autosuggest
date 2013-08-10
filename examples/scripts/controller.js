@@ -2,6 +2,7 @@ App.IndexController = Ember.ArrayController.extend({
   tags: Ember.A(),
   carsOwned: Ember.A(),
   chosenEmployees: Ember.A(),
+  dsChosenEmployees: Ember.A(),
   employees: Ember.computed(function(){
     return App.Employee.find();
   }).property(),

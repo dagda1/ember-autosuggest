@@ -44,6 +44,11 @@
     <div class="tags">
       <label>Cars:</label> {{auto-suggest source=controller.employees destination=controller.chosenEmployees searchPath="fullName" minChars=0}}
     </div>
+
+    <h2>Specify an ember-data class as the source.</h2>
+    <div class="tags">
+      <label>Cars:</label> {{auto-suggest source=App.Employee destination=controller.dsChosenEmployees searchPath="fullName" minChars=0}}
+    </div>
   </script>
 
 </body>
