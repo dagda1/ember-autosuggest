@@ -1,6 +1,10 @@
 App.IndexController = Ember.ArrayController.extend({
   tags: Ember.A(),
   carsOwned: Ember.A(),
+  chosenEmployees: Ember.A(),
+  employees: Ember.computed(function(){
+    return App.Employee.find();
+  }).property(),
   init: function(){  
     this._super.apply(this, arguments);
     this.set('content',  Ember.A([
