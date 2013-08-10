@@ -34,10 +34,10 @@ window.AutoSuggestComponent = Ember.Component.extend({
       if(('undefined' !== typeof DS) && (source.hasOwnProperty('__super__'))){
         source.find().then(resolve, reject);
       }
-      else if(!source.then){
-        resolve(source);
-      }else{
+      else if(source.then){
         source.then(resolve, reject);
+      }else{
+        resolve(source);
       }
     });
   }).property('source'),
