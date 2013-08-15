@@ -32,6 +32,14 @@ module("AutoSuggestComponent", {
         rootElement: '#ember-testing'
       });
 
+      App.Store = DS.Store.extend({
+        revision: 13,
+        adapter: DS.FixtureAdapter.extend({
+          simulateRemoteResponse: true,
+          latency: 200
+        })
+      });
+
       Ember.TEMPLATES.application = precompileTemplate(
         "{{outlet}}"
       );
