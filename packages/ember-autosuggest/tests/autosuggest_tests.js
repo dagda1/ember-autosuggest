@@ -176,13 +176,12 @@ test("A selection can be removed", function(){
   });
 });
 
-// FIXME: reinstate when the keyEvent test helper gets a
-// test("the down key will move to the first selection", function(){
-//   visit('/')
-//   .fillIn('input.autosuggest', 'Paul')
-//   .keyEvent('input.autosuggest', 'keydown', 40).then(function(){
-//     var el = find('.selections li.selection');
-// 
-//     ok(el.hasClass('active'), "keydown selected the first item");
-//   });
-// });
+test("the down key will move to the first selection", function(){
+  visit('/')
+  .fillIn('input.autosuggest', 'Paul')
+  .keyEvent('input.autosuggest', 'keydown', 40).then(function(){
+    var el = find('.results li.result');
+
+    ok(el.hasClass('active'), "keydown selected the first item");
+  });
+});

@@ -245,7 +245,9 @@ window.AutoSuggestComponent = Ember.Component.extend({
 
     init: function(){
       this._super.apply(this, arguments);
-      this.set('allowedKeyCodes', [this.KEY_UP, this.KEY_DOWN, this.COMMA, this.TAB, this.ENTER, this.ESCAPE]);
+
+      var allowedKeyCodes = Ember.A([this.KEY_UP, this.KEY_DOWN, this.COMMA, this.TAB, this.ENTER, this.ESCAPE]);
+      this.set('allowedKeyCodes', allowedKeyCodes);
     },
 
     keyDown: function(e){
