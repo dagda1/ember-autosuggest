@@ -21,7 +21,7 @@ window.AutoSuggestComponent = Ember.Component.extend({
     Ember.assert('You must supply a source for the autosuggest component', get(this, 'source'));
     Ember.assert('You must supply a destination for the autosuggest component', get(this, 'destination'));
 
-    this.$('ul.suggestions').on('mouseover', this.mouseOver.bind(this));
+    this.$('ul.suggestions').on('mouseover', 'li', this.mouseOver.bind(this));
     this.$('ul.suggestions').on('mouseout', this.mouseOut.bind(this));
   },
 
@@ -29,8 +29,6 @@ window.AutoSuggestComponent = Ember.Component.extend({
     var source = get(this, 'source');
 
     return Ember.RSVP.Promise(function(resolve, reject){
-      // FIXME: Is there a better way to know if this is an
-      // ember-data class?
       if(('undefined' !== typeof DS) && (DS.Model.detect(source))){
         source.find().then(resolve, reject);
       }
@@ -213,6 +211,11 @@ window.AutoSuggestComponent = Ember.Component.extend({
   },
 
   mouseOut: function(evt){
+    var target = $(evt.target);
+    if(target.parent('ul.autosuggest')){
+      return;
+    }
+
     this.$('ul.suggestions li').removeClass('hover');
   },
 
