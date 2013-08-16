@@ -47,7 +47,7 @@ module("AutoSuggestComponent", {
       Ember.TEMPLATES.index = precompileTemplate(
         "<div id='ember-testing-container'>" +
         "  <div id='ember-testing'>" + 
-        "    {{auto-suggest source=controller destination=tags}}" +
+        "    {{auto-suggest source=controller destination=tags minChars=0}}" +
         "  </div>" +
         "</div>"
       );
@@ -176,12 +176,23 @@ test("A selection can be removed", function(){
   });
 });
 
-test("the down key will move to the first selection", function(){
+test("key down and key up change the active elemnt", function(){
   visit('/')
-  .fillIn('input.autosuggest', 'Paul')
+  .fillIn('input.autosuggest', 'a')
   .keyEvent('input.autosuggest', 'keydown', 40).then(function(){
-    var el = find('.results li.result');
+    var active = find('.results li.result.active');
 
-    ok(el.hasClass('active'), "keydown selected the first item");
+    equal(1, active.length, "only one element is active");
+    equal("Michael Collins", active.text().trim(), "Correct result is highlighted");
+  }).keyEvent('input.autosuggest', 'keydown', 40).then(function(){
+    var active = find('.results li.result.active');
+
+    equal(1, active.length, "only one element is active");
+    equal("Paul Cowan", active.text().trim(), "Correct result is highlighted");
+  }).keyEvent('input.autosuggest', 'keydown', 38).then(function(){
+    var active = find('.results li.result.active');
+
+    equal(1, active.length, "only one element is active");
+    equal("Michael Collins", active.text().trim(), "Correct result is highlighted");
   });
 });
