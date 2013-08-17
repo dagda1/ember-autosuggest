@@ -36,7 +36,7 @@
     </div>
     <pre>
       <code>
-        &#123;&#123;auto-suggest source=controller destination=tags minChars=0&#125;&#125;
+&#123;&#123;auto-suggest source=controller destination=tags minChars=0&#125;&#125;
       </code>
     </pre>
 
@@ -48,7 +48,7 @@
     </div>
     <pre>
       <code>
-        &#123;&#123;auto-suggest source=controller.cars destination=controller.carsOwned searchPath="make" minChars=0&#125;&#125;
+&#123;&#123;auto-suggest source=controller.cars destination=controller.carsOwned searchPath="make" minChars=0&#125;&#125;
       </code>
     </pre>
     <hr/>
@@ -59,10 +59,15 @@
     </div>
     <pre>
       <code>
-        &#123;&#123;auto-suggest source=App.Employee destination=controller.dsChosenEmployees searchPath="fullName" minChars=0&#125;&#125;
+&#123;&#123;auto-suggest source=App.Employee destination=controller.dsChosenEmployees searchPath="fullName" minChars=0&#125;&#125;
       </code>
     </pre>
-
+    <p>This will call findQuery with an expression created from the <b>searchPath</b>.  In the above example, that would be:
+      <pre>
+        <code>
+App.Employee.findQuery({fullName: '&lt;query&gt;'});
+        </code>
+      </pre>
     <hr/>
 
     <h2>filter on computed property that returns a promise.</h2>
@@ -71,7 +76,7 @@
     </div>
     <pre>
       <code>
-        &#123;&#123;auto-suggest source=controller.employees destination=controller.chosenEmployees searchPath="fullName" minChars=0&#125;&#125;
+&#123;&#123;auto-suggest source=controller.employees destination=controller.chosenEmployees searchPath="fullName" minChars=0&#125;&#125;
       </code>
     </pre>
 

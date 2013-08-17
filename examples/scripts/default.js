@@ -2,22 +2,31 @@ window.App = Ember.Application.create();
 
 App.AutoSuggestComponent = window.AutoSuggestComponent;
 
+App.FixtureAdapter = DS.FixtureAdapter.extend({
+  queryFixtures: function(fixtures, query){
+    return fixtures.filter(function(employee){
+      var fullName =  employee.firstName + " " + employee.surname;
+      return fullName.toLowerCase().search(query.fullName.toLowerCase()) !== -1;
+    });
+  }
+});
+
 App.Store = DS.Store.extend({
   revision: 13,
-  adapter: DS.FixtureAdapter.extend({
+  adapter: App.FixtureAdapter.extend({
     simulateRemoteResponse: true,
     latency: 200
   })
 });
 
 App.Employee = DS.Model.extend({
-    firstName: DS.attr('string'),
-    surname: DS.attr('string'),
-    age: DS.attr('number'),
-    fullName: Ember.computed(function(){
-         return this.get('firstName') + " " + this.get('surname');
-    }).property('firstName', 'surname'),
-    isChecked: false
+  firstName: DS.attr('string'),
+  surname: DS.attr('string'),
+  age: DS.attr('number'),
+  fullName: Ember.computed(function(){
+       return this.get('firstName') + " " + this.get('surname');
+  }).property('firstName', 'surname'),
+  isChecked: false
 });
 
 App.Employee.FIXTURES = [

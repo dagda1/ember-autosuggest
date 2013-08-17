@@ -28,7 +28,7 @@ module("AutoSuggestComponent", {
     });
 
     Ember.run(function() {
-      App = Ember.Application.create({
+      window.App = App = Ember.Application.create({
         rootElement: '#ember-testing'
       });
 

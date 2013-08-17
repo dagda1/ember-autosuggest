@@ -22,15 +22,20 @@ window.AutoSuggestComponent = Ember.Component.extend({
     Ember.assert('You must supply a destination for the autosuggest component', get(this, 'destination'));
 
     this.$('ul.suggestions').on('mouseover', 'li', this.mouseOver.bind(this));
-    this.$('ul.suggestions').on('mouseout', this.mouseOut.bind(this));
+    this.$('ul.suggestions').on('mouseout', 'li', this.mouseOut.bind(this));
   },
 
-  _source: Ember.computed(function(){
-    var source = get(this, 'source');
+  _queryPromise: function(query){
+    var source = get(this, 'source'),
+        searchPath = get(this, 'searchPath');
 
     return Ember.RSVP.Promise(function(resolve, reject){
       if(('undefined' !== typeof DS) && (DS.Model.detect(source))){
-        source.find().then(resolve, reject);
+        var queryExpression = {};
+
+        queryExpression[searchPath] = query;
+
+        source.find(queryExpression).then(resolve, reject);
       }
       else if(source.then){
         source.then(resolve, reject);
@@ -38,20 +43,20 @@ window.AutoSuggestComponent = Ember.Component.extend({
         resolve(source);
       }
     });
-  }).property('source'),
+  },
 
   queryDidChange: function(){
     var query = get(this, 'query'),
-        source = get(this, '_source'),
         displayResults = get(this, 'displayResults'),
         self = this;
 
     if((!query) || (query.length <= get(this, 'minChars'))){
       set(this, 'selectionIndex', -1);
-      return displayResults.clear();
+      displayResults.clear();
+      return;
     }
 
-    source.then(function(results){
+    this._queryPromise(query).then(function(results){
       self.processResults(query, results);
     },
     function(e){
@@ -191,10 +196,6 @@ window.AutoSuggestComponent = Ember.Component.extend({
 
   mouseOver: function(evt){
     var el = this.$(evt.target);
-
-    if(evt.target.tagName.toLowerCase() !== 'ul' && !el.hasClass('result')){
-      return;
-    }
 
     var active = get(this, 'displayResults').filter(function(item){
                    return get(item, 'active');
