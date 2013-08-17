@@ -50,7 +50,7 @@ window.AutoSuggestComponent = Ember.Component.extend({
         displayResults = get(this, 'displayResults'),
         self = this;
 
-    if((!query) || (query.length <= get(this, 'minChars'))){
+    if(!get(this, 'hasQuery')){
       set(this, 'selectionIndex', -1);
       displayResults.clear();
       return;
