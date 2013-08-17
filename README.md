@@ -25,7 +25,6 @@ Declared in a template using the new [Ember component](http://emberjs.com/api/cl
 
 ```
 - `minChars` - Specify how many characters the user must enter into the input before the search is triggered, the default is `1`.
-
 ```
 {{auto-suggest source=controller destination=tags minChars=0}}
 ```
