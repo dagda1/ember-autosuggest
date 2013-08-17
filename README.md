@@ -30,6 +30,14 @@ Declared in a template using the new [Ember component](http://emberjs.com/api/cl
 {{auto-suggest source=controller destination=tags minChars=0}}
 ```
 
+### Query an Ember-Data model
+```
+{{auto-suggest source=App.Employee destination=controller.dsChosenEmployees searchPath="fullName" minChars=0}}
+```
+This will call findQuery with an expression created from the **searchPath**.  In the above example, that would be:
+```
+App.Employee.findQuery({fullName: '<query>'});
+```
 ## Build It
 
 1. `git clone https://github.com/dagda1/ember-autosuggest.git`
