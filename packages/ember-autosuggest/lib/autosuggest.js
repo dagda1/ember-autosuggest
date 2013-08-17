@@ -48,9 +48,10 @@ window.AutoSuggestComponent = Ember.Component.extend({
   queryDidChange: function(){
     var query = get(this, 'query'),
         displayResults = get(this, 'displayResults'),
+        hasQuery = get(this, 'hasQuery'),
         self = this;
 
-    if(!get(this, 'hasQuery')){
+    if(!hasQuery){
       set(this, 'selectionIndex', -1);
       displayResults.clear();
       return;
