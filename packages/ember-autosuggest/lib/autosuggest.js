@@ -207,14 +207,18 @@ window.AutoSuggestComponent = Ember.Component.extend({
       set(this, 'selectionIndex', -1);
     }
 
-    this.$('ul.suggestions li').removeClass('hover');
+    if(el.hasClass('result-name')){
+      return;
+    }
 
+    this.$('ul.suggestions li').removeClass('hover');
     el.addClass('hover');
   },
 
   mouseOut: function(evt){
     var target = $(evt.target);
-    if(target.parent('ul.autosuggest')){
+
+    if(target.parents('ul').hasClass('suggestions')){
       return;
     }
 
