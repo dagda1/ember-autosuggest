@@ -28,6 +28,8 @@
     ENV['STUB_OBJECT_CREATE'] = !Object.create;
   }
 
+  EmberDev.afterEach = Ember.k;
+
   EmberDev.distros = {
     spade:   'ember-spade.js',
     build:   'ember.js',

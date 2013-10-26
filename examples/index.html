@@ -6,7 +6,7 @@
     <link rel="stylesheet" type="text/css" href="styles/default.css" />
     <link rel="stylesheet" type="text/css" href="styles/autosuggest.css" />
 
-    <script type="text/javascript" src="/lib/jquery-1.9.0.js"></script>
+    <script type="text/javascript" src="/lib/jquery-1.10.2.js"></script>
     <script type="text/javascript" src="/lib/handlebars-1.0.0.js"></script>
     <script type="text/javascript" src="/packages/ember/lib/main.js"></script>
     <script type="text/javascript" src="/packages/ember-data/lib/main.js"></script>
@@ -32,11 +32,11 @@
     <h1>Demo</h1>
     <h2>Default</h2>
     <div class="tags">
-      <label>Tags:</label> {{auto-suggest source=controller destination=tags minChars=0}}
+      <label>Tags:</label> {{auto-suggest source=model destination=tags minChars=0}}
     </div>
     <pre>
       <code>
-&#123;&#123;auto-suggest source=controller destination=tags minChars=0&#125;&#125;
+&#123;&#123;auto-suggest source=model destination=tags minChars=0&#125;&#125;
       </code>
     </pre>
 

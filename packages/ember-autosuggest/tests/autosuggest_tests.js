@@ -47,7 +47,7 @@ module("AutoSuggestComponent", {
       Ember.TEMPLATES.index = precompileTemplate(
         "<div id='ember-testing-container'>" +
         "  <div id='ember-testing'>" + 
-        "    {{auto-suggest source=controller destination=tags minChars=0}}" +
+        "    {{auto-suggest source=model destination=tags minChars=0}}" +
         "  </div>" +
         "</div>"
       );
@@ -78,6 +78,7 @@ module("AutoSuggestComponent", {
     component = App.__container__.lookup('component:autoSuggest');
   },
   teardown: function(){
+    Ember.TEMPLATES = {};
     Ember.run(function(){
       get(controller, 'tags').clear();
     });
@@ -90,7 +91,6 @@ module("AutoSuggestComponent", {
 
 test("autosuggest DOM elements are setup", function(){
   expect(4);
-
   visit('/').then(function() {
     ok(Ember.$('div.autosuggest'), "autosuggest component in view");
     ok(Ember.$('input.autosuggest').length, "suggestion input in DOM.");
@@ -114,7 +114,7 @@ test("a no results message is displayed when no match is found", function(){
 test("Search results should be filtered", function(){
   expect(4);
 
-  equal(get(controller, 'length'), 3, "precon - 3 possible selections exist");
+  equal(get(controller, 'content.length'), 3, "precon - 3 possible selections exist");
 
   visit('/').then(function(){
     equal(Ember.$('ul.suggestions').is(':visible'), false, "precon - results ul is initially not displayed");

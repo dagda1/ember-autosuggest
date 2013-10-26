@@ -1,5 +1,5 @@
-// Version: v0.13-92-gad6b4f0
-// Last commit: ad6b4f0 (2013-08-09 21:34:23 +0100)
+// Version: v0.13-90-g923c48d
+// Last commit: 923c48d (2013-08-02 19:06:11 -0700)
 
 
 (function() {
@@ -6766,7 +6766,7 @@ DS.Serializer = Ember.Object.extend({
     @method _addId
     @private
     @param {any} data the serialized representation that is being built
-    @param {DS.Model subclass} type
+    @param {Ember.Model subclass} type
     @param {any} id the materialized id from the record
   */
   _addId: function(hash, type, id) {
@@ -6972,10 +6972,8 @@ DS.Serializer = Ember.Object.extend({
 
     aliases.forEach(function(key, type) {
       plural = self.pluralize(key);
-      if(key !== plural){
-        Ember.assert("The '" + key + "' alias has already been defined", !aliases.get(plural));
-        aliases.set(plural, type);
-      }
+      Ember.assert("The '" + key + "' alias has already been defined", !aliases.get(plural));
+      aliases.set(plural, type);
     });
 
     // This map is only for backward compatibility with the `sideloadAs` option.
@@ -9726,7 +9724,7 @@ DS.RESTAdapter = DS.Adapter.extend({
   */
   findQuery: function(store, type, query, recordArray) {
     var root = this.rootForType(type),
-        adapter = this;
+    adapter = this;
 
     return this.ajax(this.buildURL(root), "GET", {
       data: query
