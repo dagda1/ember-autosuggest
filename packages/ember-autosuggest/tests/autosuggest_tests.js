@@ -196,3 +196,19 @@ test("key down and key up change the active elemnt", function(){
     equal("Michael Collins", active.text().trim(), "Correct result is highlighted");
   });
 });
+
+test("pressing enter on a selected item adds the selection to the destination", function(){
+  visit('/')
+  .fillIn('input.autosuggest', 'Michael')
+  .keyEvent('input.autosuggest', 'keydown', 40).then(function(){
+    var active = find('.results li.result.active');
+
+    equal(1, active.length, "only one element is active");
+    equal("Michael Collins", active.text().trim(), "Correct result is highlighted");
+  }).keyEvent('input.autosuggest', 'keydown', 13).then(function(){
+    equal(get(controller, 'tags.length'), 1, "1 selection has been added.");
+    var el = find('.selections li.selection');
+    equal(el.length, 1, "1 selection element has been added");
+    ok(/Michael Collins/.test(el.first().text()), "Correct text displayed in element.");
+  });
+});

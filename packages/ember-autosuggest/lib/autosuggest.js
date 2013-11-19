@@ -90,7 +90,7 @@ window.AutoSuggestComponent = Ember.Component.extend({
         return;
       }
 
-      this.addSelection(active);
+      this.send('addSelection', active);
     },
 
     removeSelection: function(item){
