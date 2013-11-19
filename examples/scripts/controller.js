@@ -4,7 +4,7 @@ App.IndexController = Ember.ArrayController.extend({
   chosenEmployees: Ember.A(),
   dsChosenEmployees: Ember.A(),
   employees: Ember.computed(function(){
-    return App.Employee.find();
+    return this.get('store').find('employee');
   }).property(),
   init: function(){  
     this._super.apply(this, arguments);
