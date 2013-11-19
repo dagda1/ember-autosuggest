@@ -32,8 +32,8 @@
 
   EmberDev.distros = {
     spade:   'ember-autosuggest-spade.js',
-    build:   'ember.js',
-    prod:    'ember.prod.js',
-    runtime: 'ember-runtime.js'
+    build:   'ember-autosuggest.js',
+    prod:    'ember-autosuggest.prod.js',
+    runtime: 'ember-autosuggest-runtime.js'
   };
 })();
