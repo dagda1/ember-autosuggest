@@ -5,4 +5,5 @@ gem "ember-dev", git: "https://github.com/emberjs/ember-dev.git", branch: "maste
 
 gem 'ember-data-source', git: "https://github.com/emberjs/data.git"
 gem 'ember-source', '1.1.2'
-gem 'handlebars-source', '1.0.12'
+
+gem 'debugger'

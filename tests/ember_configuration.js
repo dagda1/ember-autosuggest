@@ -14,11 +14,11 @@
     ENV.__test_hook_count__ += object;
   });
 
+  var extendPrototypes = QUnit.urlParams.exntedprototypes;
+  ENV['EXTEND_PROTOTYPES'] = !!extendPrototypes;
+
   // Handle extending prototypes
   QUnit.config.urlConfig.push('extendprototypes');
-
-  var extendPrototypes = QUnit.urlParams.extendprototypes;
-  ENV['EXTEND_PROTOTYPES'] = !!extendPrototypes;
 
   // Don't worry about jQuery version
   ENV['FORCE_JQUERY'] = true;
@@ -31,7 +31,7 @@
   EmberDev.afterEach = Ember.k;
 
   EmberDev.distros = {
-    spade:   'ember-spade.js',
+    spade:   'ember-autosuggest-spade.js',
     build:   'ember.js',
     prod:    'ember.prod.js',
     runtime: 'ember-runtime.js'
