@@ -35,7 +35,7 @@ Declared in a template using the new [Ember component](http://emberjs.com/api/cl
 ```
 This will call findQuery with an expression created from the **searchPath**.  In the above example, that would be:
 ```
-App.Employee.findQuery({fullName: '<query>'});
+store.find('employee', {fullName: '<query>'});
 ```
 ## Build It
 

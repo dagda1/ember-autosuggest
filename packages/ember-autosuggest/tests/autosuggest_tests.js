@@ -33,7 +33,6 @@ module("AutoSuggestComponent", {
       });
 
       App.Store = DS.Store.extend({
-        revision: 13,
         adapter: DS.FixtureAdapter.extend({
           simulateRemoteResponse: true,
           latency: 200

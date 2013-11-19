@@ -30,7 +30,6 @@ module("Ember.Data source tests", {
       App.FixtureAdapter = DS.FixtureAdapter.extend();
 
       App.Store = DS.Store.extend({
-        revision: 13,
         adapter: App.FixtureAdapter.extend({
           simulateRemoteResponse: true
           //latency: 200

@@ -120,7 +120,8 @@ window.AutoSuggestComponent = Ember.Component.extend({
 
   _queryPromise: function(query){
     var source = get(this, 'source'),
-        searchPath = get(this, 'searchPath');
+        searchPath = get(this, 'searchPath'),
+        store = get(this, 'store');
 
     return Ember.RSVP.Promise(function(resolve, reject){
       if(('undefined' !== typeof DS) && (DS.Model.detect(source))){
@@ -128,7 +129,9 @@ window.AutoSuggestComponent = Ember.Component.extend({
 
         queryExpression[searchPath] = query;
 
-        source.find(queryExpression).then(resolve, reject);
+        var type = source.toString().humanize();
+
+        store.find(type, queryExpression).then(resolve, reject);
       }
       else if(source.then){
         source.then(resolve, reject);
