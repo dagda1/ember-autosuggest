@@ -242,7 +242,10 @@ window.AutoSuggestComponent = Ember.Component.extend({
     suggestions.css('position', 'absolute');
     suggestions.css('left', position.left);
     suggestions.css('top', position.top + input.height() + 7);
-    suggestions.css('width', this.$('ul.selections').outerWidth() - position.left);
+
+    var width = this.$('ul.selections').outerWidth() - position.left;
+
+    suggestions.css('width', width);
   },
 
   autosuggest: Ember.TextField.extend({
