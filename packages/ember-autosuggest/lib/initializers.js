@@ -17,7 +17,7 @@ Ember.onLoad('Ember.Application', function(Application) {
       });
 
       // FIXME: why does this not work?
-      // application.inject('component:autoSuggest', 'store', 'store:main');
+      // application.inject('component:auto-suggest', 'store', 'store:main');
     }
   });
 });
