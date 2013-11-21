@@ -5,8 +5,8 @@ Ember.TEMPLATES['components/auto-suggest'] = precompileTemplate(
   "{{#each destination}}" +
   "  <li class=\"selection\">" +
   "    <a class=\"as-close\" {{action removeSelection this}}>x</a>" +
-  "     {{yield}}" +
-  "    {{displayHelper controller.searchPath}}" +
+  "      {{yield}}" +
+  "      {{displayHelper controller.searchPath}}" +
   "  <\/li>" +
   "{{/each}}" +
   "<li>{{view view.autosuggest value=query moveSelection='moveSelection' selectActive='selectActive' hideResults='hideResults' class='autosuggest'}}<\/li>" +
