@@ -46,8 +46,10 @@ module("Customisations", {
 
       Ember.TEMPLATES.index = precompileTemplate(
         "<div id='ember-testing-container'>" +
-        "  <div id='ember-testing'>" + 
-        "    {{auto-suggest source=controller destination=tags minChars=0}}" +
+        "  <div id='ember-testing'>" +
+        "    {{#auto-suggest source=content destination=tags minChars=0}}" +
+        "      <strong>CHANGED</strong>" +
+        "    {{/auto-suggest}}" +
         "  </div>" +
         "</div>"
       );
@@ -89,6 +91,29 @@ module("Customisations", {
   }
 });
 
-// test("Can display a different search result", function(){
-//   ok(false);
-// });
+test("Can prepend a customisation in each suggestion", function(){
+  equal(get(controller, 'content.length'), 3, "precon - 3 possible selections exist");
+
+  visit('/').then(function(){
+    equal(Ember.$('ul.suggestions').is(':visible'), false, "precon - results ul is initially not displayed");
+  })
+  .fillIn('input.autosuggest', 'Paul').then(function(){
+    var el = find('.results .suggestions li.result span');
+    equal(el.length, 1, "1 search result exists");
+    equal(el.text().normalize(), "CHANGED Paul Cowan", "Text prepended to suggestions.");
+  });
+});
+
+test("Can prepend a customisation to each chosen selection", function(){
+  equal(get(controller, 'content.length'), 3, "precon - 3 possible selections exist");
+
+  visit('/').then(function(){
+    equal(Ember.$('ul.suggestions').is(':visible'), false, "precon - results ul is initially not displayed");
+  })
+  .fillIn('input.autosuggest', 'Paul')
+  .click('.results .suggestions li.result').then(function(){
+    var el = find('.selections li.selection');
+    equal(el.length, 1, "1 selection element has been added");
+    ok(/CHANGED Paul Cowan/.test(el.text().normalize()), "Text prepended to selections.");
+  });
+});

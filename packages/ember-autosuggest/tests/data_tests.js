@@ -146,7 +146,7 @@ test("Search results should be filtered and visible", function(){
     ok(Ember.$('ul.suggestions').is(':visible'), "results ul is displayed.");
     var el = find('.results .suggestions li.result span');
     equal(el.length, 1, "1 search result exists");
-    equal(el.text(), "Carol Bazooka", "1 search result is visible.");
+    equal(el.text().trim(), "Carol Bazooka", "1 search result is visible.");
   });
 });
 

@@ -2,7 +2,7 @@ ember-autosuggest
 =================
 ![ember autosuggest](autosuggest.png)
 
-This Plug-In will auto-complete or auto-suggest completed search queries for you as you type.
+This component will auto-complete or auto-suggest completed search queries for you as you type.
 
 There is very basic keyboard navigation using the up and down keys to scroll up and down the results and enter adds the selection,
 while hitting escape hides the autocomplete menu.
@@ -30,6 +30,16 @@ Declared in a template using the new [Ember component](http://emberjs.com/api/cl
 ```
 {{auto-suggest source=controller destination=tags minChars=0}}
 ```
+
+### Customise Suggestions and Results
+- You can prepend content to the suggestions and the results by using the component in its block form:
+```
+{{#auto-suggest source=controller.employees destination=controller.chosenEmployees searchPath="fullName" minChars=0}}
+  <img src="img/small_avatar.png" {{bindAttr alt="fullName"}}/>
+{{/auto-suggest}}
+```
+- The above declaration will result in the following markup:
+![ember autosuggest](custom.png)
 
 ### Query an Ember-Data model
 ```

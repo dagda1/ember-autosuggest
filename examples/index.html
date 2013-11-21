@@ -54,6 +54,22 @@
     </pre>
     <hr/>
 
+    <h2>Customise suggestions and results.</h2>
+    <div class="tags">
+      <label>Cars:</label> {{#auto-suggest source=controller.employees destination=controller.chosenEmployees searchPath="fullName" minChars=0}}
+                              <img src="img/small_avatar.png" {{bindAttr alt="fullName"}}/>
+                           {{/auto-suggest}}
+    </div>
+    <pre>
+      <code>
+&#123;&#123;#auto-suggest source=controller.employees destination=controller.chosenEmployees searchPath="fullName" minChars=0&#125;&#125;
+  &lt;img src="img/small_avatar.png"&#123;&#123;bindAttr alt="fullName"&#125;&#125;/&gt;
+&#123;&#123;/auto-suggest&#125;&#125;
+      </code>
+    </pre>
+
+    <hr/>
+
     <h2>Query an Ember-Data model.</h2>
     <div class="tags">
       <label>Cars:</label> {{auto-suggest source=App.Employee destination=controller.dsChosenEmployees searchPath="fullName" minChars=0}}

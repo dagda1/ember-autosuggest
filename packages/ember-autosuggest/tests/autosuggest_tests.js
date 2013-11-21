@@ -121,7 +121,7 @@ test("Search results should be filtered", function(){
   .fillIn('input.autosuggest', 'Paul').then(function(){
     var el = find('.results .suggestions li.result span');
     equal(el.length, 1, "1 search result exists");
-    equal(el.text(), "Paul Cowan", "1 search result is visible.");
+    equal(el.text().trim(), "Paul Cowan", "1 search result is visible.");
   });
 });
 

@@ -290,4 +290,24 @@ window.AutoSuggestComponent = Ember.Component.extend({
       }
     },
   }),
+
+  _yield: function(context, options) {
+    var get = Ember.get, 
+    view = options.data.view,
+    parentView = this._parentView,
+    template = get(this, 'template');
+
+    if (template) {
+      Ember.assert("A Component must have a parent view in order to yield.", parentView);      
+      view.appendChild(Ember.View, {
+        isVirtual: true,
+        tagName: '',
+        _contextView: parentView,
+        template: template,
+        context: get(view, 'context'), // the default is get(parentView, 'context'),
+        controller: get(view, 'controller'), // the default is get(parentView, 'context'),
+        templateData: { keywords: parentView.cloneKeywords() }
+      });
+    }
+  },
 });
