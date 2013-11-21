@@ -34,9 +34,9 @@ Declared in a template using the new [Ember component](http://emberjs.com/api/cl
 ### Customise Suggestions and Results
 - You can prepend content to the suggestions and the results by using the component in its block form:
 ```
-{{#auto-suggest source=controller.employees destination=controller.chosenEmployees searchPath="fullName" minChars=0}}
-  <img src="img/small_avatar.png" {{bindAttr alt="fullName"}}/>
-{{/auto-suggest}}
+    {{#auto-suggest source=controller.employees destination=controller.chosenEmployees searchPath="fullName" minChars=0}}
+      <img src="img/small_avatar.png" {{bindAttr alt="fullName"}}/>
+    {{/auto-suggest}}
 ```
 - The above declaration will result in the following markup:
 ![ember autosuggest](custom.png)
