@@ -10,6 +10,7 @@ window.AutoSuggestComponent = Ember.Component.extend({
       set(this, 'query', '');
       get(this, 'destination').addObject(selection);
       set(this, 'selectionIndex', -1);
+      this.$('input[type=text]').focus();
     },
 
     moveSelection: function(direction){
@@ -86,6 +87,7 @@ window.AutoSuggestComponent = Ember.Component.extend({
       });
 
       if(!active){
+        this.send('hideResults');
         return;
       }
 
