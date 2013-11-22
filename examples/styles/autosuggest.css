@@ -70,9 +70,11 @@ ul.selection li.selection.blur {
   background-color: #ededed;
   color: inherit;
 }
+ul.selections li{
+  float: left;
+}
 
 ul.selections li.selection{
-  float: left;
   background-image: none;
   -webkit-border-radius: 4px;
   -moz-border-radius: 4px;
