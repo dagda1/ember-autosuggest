@@ -70,6 +70,7 @@ ul.selection li.selection.blur {
   background-color: #ededed;
   color: inherit;
 }
+
 ul.selections li{
   float: left;
 }
