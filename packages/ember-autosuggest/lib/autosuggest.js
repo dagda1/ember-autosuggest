@@ -234,15 +234,16 @@ window.AutoSuggestComponent = Ember.Component.extend({
     var input = this.$('input.autosuggest'),
         suggestions = this.$('ul.suggestions'),
         selections = this.$('ul.selections'),
-        position = input.position();
+        el = this.$(),
+        position = el.position();
 
     results.removeClass('hdn');
 
     suggestions.css('position', 'absolute');
     suggestions.css('left', position.left);
-    suggestions.css('top', position.top + input.height() + 7);
+    suggestions.css('top', position.top + this.$().height());
 
-    var width = this.$('ul.selections').outerWidth() - position.left;
+    var width = el.outerWidth();
 
     suggestions.css('width', width);
   },
