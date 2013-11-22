@@ -68,7 +68,6 @@ window.AutoSuggestComponent = Ember.Component.extend({
 
       if(!get(displayResults, 'length')){
         this.$('.no-results').addClass('hdn');
-        return;
       }
 
       this.$('.results').addClass('hdn');
@@ -167,8 +166,6 @@ window.AutoSuggestComponent = Ember.Component.extend({
     var self = this,
         displayResults = get(this, 'displayResults');
 
-    this.positionResults();
-
     var results = source.filter(function(item){
       return item.get(get(self, 'searchPath')).toLowerCase().search(query.toLowerCase()) !== -1;
     }).filter(function(item){
@@ -178,6 +175,8 @@ window.AutoSuggestComponent = Ember.Component.extend({
     if(get(results, 'length') === 0){
       return displayResults.clear();
     }
+
+    this.positionResults();
 
     var searchPath = get(this, 'searchPath');
 
