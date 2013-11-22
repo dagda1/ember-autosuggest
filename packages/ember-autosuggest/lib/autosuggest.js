@@ -289,6 +289,11 @@ window.AutoSuggestComponent = Ember.Component.extend({
           console.log(keyCode);
       }
     },
+
+    focusOut: function(e) {
+      var self = this;
+      setTimeout( function(){ self.sendAction('hideResults'); } , 200 );
+    }
   }),
 
   _yield: function(context, options) {
@@ -298,7 +303,7 @@ window.AutoSuggestComponent = Ember.Component.extend({
     template = get(this, 'template');
 
     if (template) {
-      Ember.assert("A Component must have a parent view in order to yield.", parentView);      
+      Ember.assert("A Component must have a parent view in order to yield.", parentView);
       view.appendChild(Ember.View, {
         isVirtual: true,
         tagName: '',
