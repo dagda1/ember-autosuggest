@@ -80,7 +80,6 @@ module("Customisations", {
     component = App.__container__.lookup('component:autoSuggest');
   },
   teardown: function(){
-    Ember.TEMPLATES = {};
     Ember.run(function(){
       get(controller, 'tags').clear();
     });
