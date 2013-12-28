@@ -9,7 +9,7 @@ while hitting escape hides the autocomplete menu.
 
 This is a work in progress. 
 
-Built against Ember 1.1.2 and Ember-Data beta 1.0.0-beta.4
+Built against Ember 1.2.0 and Ember-Data beta 1.0.0-beta.4
 
 ## Usage
 Declared in a template using the new [Ember component](http://emberjs.com/api/classes/Ember.Component.html) syntax.
