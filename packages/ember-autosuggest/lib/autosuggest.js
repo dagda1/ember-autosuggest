@@ -316,5 +316,5 @@ window.AutoSuggestComponent = Ember.Component.extend({
         templateData: { keywords: parentView.cloneKeywords() }
       });
     }
-  },
+  }
 });
