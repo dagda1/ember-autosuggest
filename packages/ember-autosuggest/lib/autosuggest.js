@@ -124,7 +124,7 @@ window.AutoSuggestComponent = Ember.Component.extend({
         searchPath = get(this, 'searchPath'),
         store = get(this, 'store');
 
-    return Ember.RSVP.Promise(function(resolve, reject){
+    return new Ember.RSVP.Promise(function(resolve, reject){
       if(('undefined' !== typeof DS) && (DS.Model.detect(source))){
         var queryExpression = {};
 
@@ -259,7 +259,6 @@ window.AutoSuggestComponent = Ember.Component.extend({
     ESCAPE: 27,
 
     init: function(){
-      console.log('IN TEXTFIELD INIT');
       this._super.apply(this, arguments);
 
       var allowedKeyCodes = Ember.A([this.KEY_UP, this.KEY_DOWN, this.COMMA, this.TAB, this.ENTER, this.ESCAPE]);
