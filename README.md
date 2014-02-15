@@ -7,7 +7,7 @@ This component will auto-complete or auto-suggest completed search queries for y
 There is very basic keyboard navigation using the up and down keys to scroll up and down the results and enter adds the selection,
 while hitting escape hides the autocomplete menu.
 
-Built against Ember 1.4.0 and Ember-Data beta 1.0.0-beta.4
+Built against Ember 1.4.0 and Ember-Data beta 1.0.0-beta.7+canary
 
 ## Usage
 Declared in a template using the new [Ember component](http://emberjs.com/api/classes/Ember.Component.html) syntax.
