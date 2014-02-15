@@ -1,8 +1,8 @@
 GIT
   remote: https://github.com/emberjs/data.git
-  revision: b5d02af12b67f222c2346c9bdac5386e1a87e017
+  revision: d06364e660023727de768e0caece692f7172cdf9
   specs:
-    ember-data-source (1.0.0.beta.5.canary)
+    ember-data-source (1.0.0.beta.7.canary)
       ember-source
 
 GIT
