@@ -112,6 +112,7 @@ window.AutoSuggestComponent = Ember.Component.extend({
   },
 
   didInsertElement: function(){
+    this._super.apply(this, arguments);
     Ember.assert('You must supply a source for the autosuggest component', get(this, 'source'));
     Ember.assert('You must supply a destination for the autosuggest component', get(this, 'destination'));
 
