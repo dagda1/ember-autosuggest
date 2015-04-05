@@ -142,21 +142,6 @@ test("A selection can be added", function(){
   });
 });
 
-test("Don't display a suggestion that has already been selected", function(){
-  expect(3);
-
-  visit('/')
-  .fillIn('input.autosuggest', 'Paul')
-  .click('.results .suggestions li.result').then(function(){
-    var el = find('.selections li.selection');
-    equal(el.length, 1, "precon - 1 selection element has been added");
-  }).fillIn('input.autosuggest', 'Paul').then(function(){
-    var suggestions = find('.results .suggestions li.result');
-    equal(suggestions.length, 0, "no suggestion for selected item.");
-    equal(find('.results .suggestions .no-results').html(), "No Results.", "No results message is displayed.");
-  });
-});
-
 test("A selection can be removed", function(){
   expect(4);
 

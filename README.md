@@ -1,3 +1,5 @@
+## THIS REPO HAS BEEN UPGRADED TO AN [EMBER-CLI ADDON](https://github.com/dagda1/emberx-autosuggest)
+
 ember-autosuggest
 =================
 ![ember autosuggest](autosuggest.png)
@@ -33,8 +35,8 @@ Declared in a template using the new [Ember component](http://emberjs.com/api/cl
 - You can prepend content to the suggestions and the results by using the component in its block form:
 <pre>
 ```
-    {{#auto-suggest source=controller.employees destination=tags searchPath="fullName" minChars=0}}
-      <img src="img/small_avatar.png" {{bindAttr alt="fullName"}}/>
+    {{#auto-suggest source=controller.employees destination=tags searchPath="fullName" minChars=0 as |selection|}}
+      <img src="img/small_avatar.png" alt="{{selection.fullName}}"/>
     {{/auto-suggest}}
 ```
 </pre>
